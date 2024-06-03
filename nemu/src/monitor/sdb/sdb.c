@@ -53,9 +53,11 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_si(char *args){
-  // int num = 1;
-  printf("%s\n",args);
-  // cpu_exec(num);
+  int num = 1;
+  if(args != NULL){
+    sscanf(args, "%d", &num);
+  }
+  cpu_exec(num);
   return 0;
 }
 
