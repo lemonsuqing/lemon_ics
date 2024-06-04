@@ -61,6 +61,10 @@ static int cmd_si(char *args){
   return 0;
 }
 
+static int cmd_info(char *args) {
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -74,6 +78,7 @@ static struct {
 
   /* TODO: Add more commands */
   { "si", "cpu_exec N", cmd_si },
+  { "info", "info -r display reg\n     -w display monitor", cmd_info },
 };
 
 #define NR_CMD ARRLEN(cmd_table)
