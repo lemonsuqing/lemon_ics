@@ -63,6 +63,10 @@ static int cmd_si(char *args){
 }
 
 static int cmd_info(char *args) {
+  int len = strlen(args);
+  if(len > 1){
+    printf("You cannot output strings longer than 1.\nYou can only type 'r' or 'w'\n");
+  }
   return 0;
 }
 
