@@ -77,6 +77,35 @@ static int cmd_info(char *args) {
   return 0;
 }
 
+extern const char* regs[];
+extern const int reg_len;
+bool contains_register(const char* input) {
+    for (size_t i = 0; i < reg_len; ++i) {
+        if (strstr(input, regs[i]) != NULL) {
+            return true;
+        }
+    }
+     if(strstr(input, "pc") != NULL){
+       return true;
+     }
+    return false;
+}
+
+static int cmd_p(char* args) {
+  bool success = true;
+  init_regex();
+  int res = expr(args, &success);
+  if (!success) {
+    puts("invalid expression!");
+  } else {
+    if(contains_register(args))
+      printf("%s = 0x%08X\n", args, res);
+    else
+      printf("%s = %d\n", args, res);
+  }
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -91,6 +120,7 @@ static struct {
   /* TODO: Add more commands */
   { "si", "cpu_exec N", cmd_si },
   { "info", "r display reg\n     - w display monitor", cmd_info },
+  { "p", "cpu_exec N", cmd_p },
 };
 
 #define NR_CMD ARRLEN(cmd_table)
