@@ -79,7 +79,7 @@ static struct {
 
   /* TODO: Add more commands */
   { "si", "cpu_exec N", cmd_si },
-  { "info", "-r display reg\n     -w display monitor", cmd_info },
+  { "info", "r display reg\n     -w display monitor", cmd_info },
 };
 
 #define NR_CMD ARRLEN(cmd_table)
