@@ -30,7 +30,7 @@ void isa_reg_display() {
   for(int i = 0; i < reg_len; i++){
     printf("%s: 0x%08x  ", regs[i], 0x00);
     len_tag++;
-    if(len_tag>=3){
+    if(len_tag>=4){
       len_tag = 0;
       printf("\n");
     }
