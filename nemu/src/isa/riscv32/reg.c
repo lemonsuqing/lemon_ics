@@ -23,7 +23,7 @@ const char *regs[] = {
   "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
 
-int reg_len = sizeof(regs)/sizeof(regs[0]);
+const int reg_len = sizeof(regs)/sizeof(regs[0]);
 
 void isa_reg_display() {
   printf("%3s: 0x%08x  \n", "pc", cpu.pc);
