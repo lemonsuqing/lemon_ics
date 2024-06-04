@@ -49,6 +49,7 @@ static int cmd_c(char *args) {
 
 
 static int cmd_q(char *args) {
+  nemu_state.state = NEMU_QUIT;
   return -1;
 }
 
@@ -78,7 +79,7 @@ static struct {
 
   /* TODO: Add more commands */
   { "si", "cpu_exec N", cmd_si },
-  { "info", "info -r display reg\n     -w display monitor", cmd_info },
+  { "info", "-r display reg\n     -w display monitor", cmd_info },
 };
 
 #define NR_CMD ARRLEN(cmd_table)
