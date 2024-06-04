@@ -23,7 +23,18 @@ const char *regs[] = {
   "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
 
+int reg_len = sizeof(regs)/sizeof(regs[0]);
+
 void isa_reg_display() {
+  int len_tag = 0;
+  for(int i = 0; i < reg_len; i++){
+    printf("%s: 0x%08x  ", regs[i], 0x00);
+    len_tag++;
+    if(len_tag>=3){
+      len_tag = 0;
+      printf("\n");
+    }
+  }
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {

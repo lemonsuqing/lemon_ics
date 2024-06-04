@@ -68,7 +68,7 @@ static int cmd_info(char *args) {
     printf("You cannot iutput strings longer than 1.\nYou can only type 'r' or 'w'\n");
   }else{
     if(strcmp(args, "r") == 0){
-      printf("display reg\n");
+      isa_reg_display();
     }else if (strcmp(args, "w") == 0){
       printf("display monitor\n");
     }
