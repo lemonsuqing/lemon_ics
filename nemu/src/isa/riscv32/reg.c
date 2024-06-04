@@ -30,6 +30,7 @@ void isa_reg_display() {
     if(i%4==0 && i!=0)printf("\n");
     printf("%3s: 0x%08x  ", regs[i], gpr(i));
   }
+  printf("\n");
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
