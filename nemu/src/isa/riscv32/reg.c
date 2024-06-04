@@ -26,14 +26,9 @@ const char *regs[] = {
 int reg_len = sizeof(regs)/sizeof(regs[0]);
 
 void isa_reg_display() {
-  int len_tag = 0;
   for(int i = 0; i < reg_len; i++){
-    printf("%s: 0x%08x  ", regs[i], 0x00);
-    len_tag++;
-    if(len_tag>=4){
-      len_tag = 0;
-      printf("\n");
-    }
+    printf("%s: 0x%08x  ", regs[i], gpr(i));
+    if(i%4==0 && i!=0)printf("\n");
   }
 }
 
