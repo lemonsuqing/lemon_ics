@@ -11,7 +11,6 @@ int iringbuf_index = 0;
 bool flag = 0;
 
 void iringbuf_inst(word_t pc, uint32_t data){
-    printf("iringbuf_inst\n");
     iringbuf[iringbuf_index].pc = pc;
     iringbuf[iringbuf_index].data = data;
     iringbuf_index = (iringbuf_index + 1)%IRINGBUF_SIZE;
