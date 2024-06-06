@@ -6,6 +6,6 @@
 #define word_t uint32_t
 // void push_to_iringbuf(const char *logbuf,paddr_t pc);
 // void print_iringbuf(void);
-void mtrace(paddr_t addr, int len, word_t data,char op);
+void mtrace_print(paddr_t addr, int len, word_t data,char op);
 #undef word_t
 #endif

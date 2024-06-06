@@ -24,14 +24,14 @@ word_t vaddr_ifetch(vaddr_t addr, int len) {
 word_t vaddr_read(vaddr_t addr, int len) {
   word_t data = paddr_read(addr, len);
 #ifdef CONFIG_MTRACE
-  mtrace(addr,len,data,'r');
+  mtrace_print(addr,len,data,'r');
 #endif
   return data;
 }
 
 void vaddr_write(vaddr_t addr, int len, word_t data) {
 #ifdef CONFIG_MTRACE
-  mtrace(addr,len,data,'w');
+  mtrace_print(addr,len,data,'w');
 #endif
   paddr_write(addr, len, data);
 }
