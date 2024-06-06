@@ -25,7 +25,6 @@ void dissplay_inst(){
     void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
     char buf[128];
     char *p;
-    // Statement("Most recently executed instructions");
     do{
         p = buf;
         p += sprintf(buf, "%s" FMT_WORD ": %08x ", (i+1)%IRINGBUF_SIZE==end?" --> ":"     ", iringbuf[i].pc, iringbuf[i].data);

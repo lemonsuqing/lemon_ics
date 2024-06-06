@@ -68,7 +68,7 @@ static int decode_exec(Decode *s) {
     if(rd == 1){
       f_trace_call(s->pc, s->dnpc, false);
       }});R(rd) = s->pc + 4);
-  INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr   , I, s->dnpc = (src1 + imm) & ~(word_t)1;
+  INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr   , I, s->pc = (src1 + imm) & ~(word_t)1;
   IFDEF(CONFIG_FTRACE, {
     if(s->isa.inst.val == 0x00008067){
       ftrace_fun_ret(s->pc);
