@@ -1,6 +1,7 @@
 #include <trace.h>
 
 void mtrace_print(vaddr_t addr, int len, word_t data,char op){
+    printf("%c\n",op);
     if(op == 'r'){
         printf("123\n");
         printf("read 0x%08x %d byte. Data: 0x%08x\n", addr, len, data);
