@@ -31,7 +31,6 @@ void dissplay_inst(){
         disassemble(p, buf+sizeof(buf)-p, iringbuf[i].pc, (uint8_t *)&iringbuf[i].data, 4);
 
         if ((i+1)%IRINGBUF_SIZE==end) printf(ANSI_FG_RED);
-        printf("1");
         puts(buf);
     }while((i = (i+1)%IRINGBUF_SIZE) != end);
     puts(ANSI_NONE);
