@@ -26,6 +26,7 @@ int main(int argc, char *argv[]) {
   am_init_monitor();
 #else
   init_monitor(argc, argv);
+   printf(ANSI_FMT("read  Data\n", ANSI_FG_YELLOW));
 #endif
 
   /* Start engine. */
