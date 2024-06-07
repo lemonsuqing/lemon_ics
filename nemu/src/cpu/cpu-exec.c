@@ -93,7 +93,7 @@ static void statistic() {
 }
 
 void assert_fail_msg() {
-  printf("assert\n");
+  
   dissplay_inst();
   isa_reg_display();
   statistic();
