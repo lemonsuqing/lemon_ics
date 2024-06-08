@@ -73,8 +73,8 @@ void parse_elf(const char *elf_file)
             }
             for (j = 0; j < FUNC_NUM; j++)
             {
-                printf("0x%x\n", ftrace_func[j].addr);
-                printf("%s\n", ftrace_func[j].func_name);
+                log_write("0x%x\n", ftrace_func[j].addr);
+                log_write("%s\n", ftrace_func[j].func_name);
             }
 
 
