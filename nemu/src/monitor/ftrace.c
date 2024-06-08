@@ -44,20 +44,6 @@ void push_fun_name(char *fun_name) {
     }
 }
 
-// void push_fun_name(char *fun_name) {
-//     if (fun_name_stack_top < MAX_DEPTH) {
-//         fun_name_stack[fun_name_stack_top++] = fun_name;
-//         printf("Current function call stack:\n");
-//         ftrace_write("\n==> stack name :");
-//         for(int i = 0; i < fun_name_stack_top; i++) {
-//             ftrace_write("%s, ", fun_name_stack[i]);
-//         }
-//         ftrace_write("\n\n");
-//     } else {
-//         printf("Function call depth exceeds maximum limit!\n");
-//     }
-// }
-
 
 // 从栈中弹出函数名
 char* pop_fun_name() {
@@ -105,7 +91,7 @@ static void Read_Symble(int file, Elf32_Ehdr eh, Elf32_Shdr sh_table[], int sym_
     for(int i = 0; i < sym_count; i++){
         unsigned char type = ELF32_ST_TYPE(sym_table[i].st_info);
         if(type == STT_FUNC) {
-            ftrace_write("0x%08x: call [%s@0x%08x]\n", (unsigned int)sym_table[i].st_value, &str_table[sym_table[i].st_name], (unsigned int)sym_table[i].st_value);
+            log_write("0x%08x: call [%s@0x%08x]\n", (unsigned int)sym_table[i].st_value, &str_table[sym_table[i].st_name], (unsigned int)sym_table[i].st_value);
             strncpy(fun_list[fun_index].fun_name, &str_table[sym_table[i].st_name], 31); // 使用 strncpy 来复制字符串
             fun_list[fun_index].fun_name[31] = '\0'; // 确保字符串以 null 结尾
             fun_list[fun_index++].fun_addr = (unsigned int)sym_table[i].st_value;
