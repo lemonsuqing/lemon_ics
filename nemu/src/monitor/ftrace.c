@@ -44,6 +44,20 @@ void push_fun_name(char *fun_name) {
     }
 }
 
+// void push_fun_name(char *fun_name) {
+//     if (fun_name_stack_top < MAX_DEPTH) {
+//         fun_name_stack[fun_name_stack_top++] = fun_name;
+//         printf("Current function call stack:\n");
+//         ftrace_write("\n==> stack name :");
+//         for(int i = 0; i < fun_name_stack_top; i++) {
+//             ftrace_write("%s, ", fun_name_stack[i]);
+//         }
+//         ftrace_write("\n\n");
+//     } else {
+//         printf("Function call depth exceeds maximum limit!\n");
+//     }
+// }
+
 
 // 从栈中弹出函数名
 char* pop_fun_name() {
@@ -183,3 +197,4 @@ void f_trace_fun_ret(paddr_t pc){
     --Fun_depth;
     if(Fun_depth < 0) Fun_depth = 0;
 }
+
