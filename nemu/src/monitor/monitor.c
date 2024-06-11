@@ -15,6 +15,7 @@
 
 #include <isa.h>
 #include <memory/paddr.h>
+#include <unistd.h>
 
 void init_rand();
 void init_log(const char *log_file);
@@ -109,7 +110,7 @@ static int parse_args(int argc, char *argv[]) {
 
 void init_monitor(int argc, char *argv[]) {
   /* Perform some global initialization. */
-
+ ftrace_write("\n=======The invocation of the function======\n");
   /* Parse arguments. */
   parse_args(argc, argv);
 
@@ -122,9 +123,9 @@ void init_monitor(int argc, char *argv[]) {
   /* Initialize memory. */
   init_mem();
 
-// #ifdef CONFIG_FTRACE
+#ifdef CONFIG_FTRACE
   init_elf(elf_file);
-// #endif
+#endif
 
   /* Initialize devices. */
   IFDEF(CONFIG_DEVICE, init_device());
