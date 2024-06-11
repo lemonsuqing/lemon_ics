@@ -122,9 +122,9 @@ void init_monitor(int argc, char *argv[]) {
   /* Initialize memory. */
   init_mem();
 
-//#ifdef CONFIG_FTRACE
+#ifdef CONFIG_FTRACE
   init_elf(elf_file);
-//#endif
+#endif
 
   /* Initialize devices. */
   IFDEF(CONFIG_DEVICE, init_device());
