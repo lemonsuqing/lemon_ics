@@ -87,7 +87,7 @@ static void Read_Symble(int file, Elf32_Ehdr eh, Elf32_Shdr sh_table[], int sym_
     char str_table[sh_table[sym_idx].sh_size];
     Check_Section(file, sh_table[str_idx], str_table);
     int sym_count = (sh_table[sym_idx].sh_size / sizeof(Elf32_Sym));
-    log_write("=======Functions in the symbol table.======\n\n");
+    ftrace_write("=======Functions in the symbol table.======\n\n");
     for(int i = 0; i < sym_count; i++){
         unsigned char type = ELF32_ST_TYPE(sym_table[i].st_info);
         if(type == STT_FUNC) {
