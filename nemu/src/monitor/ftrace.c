@@ -150,7 +150,7 @@ static int find_callfun(paddr_t target){
     int i;
     for(i = 0; i < fun_index; i ++){
         if(fun_list[i].fun_addr == target){
-            ftrace_write("=============dnpc:0x%08x\n", target);
+            log_write("\n=============dnpc:0x%08x\n", target);
             break;
         }
     }
