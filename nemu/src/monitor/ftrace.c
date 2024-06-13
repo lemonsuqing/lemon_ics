@@ -44,6 +44,20 @@ void push_fun_name(char *fun_name) {
     }
 }
 
+// void push_fun_name(char *fun_name) {
+//     if (fun_name_stack_top < MAX_DEPTH) {
+//         fun_name_stack[fun_name_stack_top++] = fun_name;
+//         printf("Current function call stack:\n");
+//         ftrace_write("\n==> stack name :");
+//         for(int i = 0; i < fun_name_stack_top; i++) {
+//             ftrace_write("%s, ", fun_name_stack[i]);
+//         }
+//         ftrace_write("\n\n");
+//     } else {
+//         printf("Function call depth exceeds maximum limit!\n");
+//     }
+// }
+
 
 // 从栈中弹出函数名
 char* pop_fun_name() {
@@ -87,7 +101,7 @@ static void Read_Symble(int file, Elf32_Ehdr eh, Elf32_Shdr sh_table[], int sym_
     char str_table[sh_table[sym_idx].sh_size];
     Check_Section(file, sh_table[str_idx], str_table);
     int sym_count = (sh_table[sym_idx].sh_size / sizeof(Elf32_Sym));
-    log_write("=======Functions in the symbol table.======\n\n");
+    ftrace_write("=======Functions in the symbol table.======\n\n");
     for(int i = 0; i < sym_count; i++){
         unsigned char type = ELF32_ST_TYPE(sym_table[i].st_info);
         if(type == STT_FUNC) {
@@ -130,16 +144,16 @@ static void init_funtail(){
 
 void init_elf(const char *elf_file){
     if(elf_file == NULL){
-        printf("NULL\n\n\n\n");
         return;
     }
+    
     int fd = open(elf_file, O_RDONLY|O_SYNC);
     Elf32_Ehdr eh;
     Read_ELFhead(fd, &eh);
     
     Elf32_Shdr sh_table[eh.e_shentsize * eh.e_shnum];
     read_sheader(fd, eh, sh_table);//读取节头
-    
+
     read_sbols(fd, eh, sh_table);
     init_funtail();//初始化记录函数的空节头
 
@@ -150,7 +164,7 @@ static int find_callfun(paddr_t target){
     int i;
     for(i = 0; i < fun_index; i ++){
         if(fun_list[i].fun_addr == target){
-            ftrace_write("=============dnpc:0x%08x\n", target);
+            // ftrace_write("=============dnpc:0x%08x\n", target);
             break;
         }
     }
@@ -183,4 +197,3 @@ void f_trace_fun_ret(paddr_t pc){
     --Fun_depth;
     if(Fun_depth < 0) Fun_depth = 0;
 }
-
