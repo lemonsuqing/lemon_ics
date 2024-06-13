@@ -123,6 +123,7 @@ void init_monitor(int argc, char *argv[]) {
   init_mem();
 
 #ifdef CONFIG_FTRACE
+  printf("1234654653132\n\n\n");
   init_elf(elf_file);
 #endif
 
