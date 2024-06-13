@@ -139,7 +139,7 @@ void init_elf(const char *elf_file){
     
     Elf32_Shdr sh_table[eh.e_shentsize * eh.e_shnum];
     read_sheader(fd, eh, sh_table);//读取节头
-
+    printf("1234654653132\n\n\n");
     read_sbols(fd, eh, sh_table);
     init_funtail();//初始化记录函数的空节头
 
