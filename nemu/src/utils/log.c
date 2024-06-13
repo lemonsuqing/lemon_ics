@@ -31,6 +31,11 @@ void init_log(const char *log_file) {
   Log("Log is written to %s", log_file ? log_file : "stdout");
 }
 
+bool log_enable() {
+  return MUXDEF(CONFIG_TRACE, (g_nr_guest_inst >= CONFIG_TRACE_START) &&
+         (g_nr_guest_inst <= CONFIG_TRACE_END), false);
+}
+
 void init_ftrace(const char *trace_file) {
   ftrace_fp = stdout;
   if (trace_file != NULL) {
@@ -39,11 +44,6 @@ void init_ftrace(const char *trace_file) {
     ftrace_fp = fp;
   }
   Log("Ftrace is written to %s", trace_file ? trace_file : "stdout");
-}
-
-bool log_enable() {
-  return MUXDEF(CONFIG_TRACE, (g_nr_guest_inst >= CONFIG_TRACE_START) &&
-         (g_nr_guest_inst <= CONFIG_TRACE_END), false);
 }
 
 bool ftrace_enable() {
