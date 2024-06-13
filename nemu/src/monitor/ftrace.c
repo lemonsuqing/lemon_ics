@@ -130,7 +130,6 @@ static void init_funtail(){
 
 void init_elf(const char *elf_file){
     if(elf_file == NULL){
-        printf("123465\n\n\n\n");
         return;
     }
     
