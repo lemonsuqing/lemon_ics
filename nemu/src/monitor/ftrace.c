@@ -80,7 +80,6 @@ static void read_sheader(int fd, Elf32_Ehdr eh, Elf32_Shdr *sh_table){
 }
 
 static void Read_Symble(int file, Elf32_Ehdr eh, Elf32_Shdr sh_table[], int sym_idx){
-    printf("=======Functions in the symbol table.======\n\n");
     Elf32_Sym sym_table[sh_table[sym_idx].sh_size];
     Check_Section(file, sh_table[sym_idx], sym_table);
 
