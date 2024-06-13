@@ -133,7 +133,6 @@ void init_elf(const char *elf_file){
         printf("NULL\n\n\n\n");
         return;
     }
-    
     int fd = open(elf_file, O_RDONLY|O_SYNC);
     Elf32_Ehdr eh;
     Read_ELFhead(fd, &eh);
