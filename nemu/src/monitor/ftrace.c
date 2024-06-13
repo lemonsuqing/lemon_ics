@@ -48,11 +48,11 @@ void push_fun_name(char *fun_name) {
 //     if (fun_name_stack_top < MAX_DEPTH) {
 //         fun_name_stack[fun_name_stack_top++] = fun_name;
 //         printf("Current function call stack:\n");
-//         ftrace_write("\n==> stack name :");
+//         log_write("\n==> stack name :");
 //         for(int i = 0; i < fun_name_stack_top; i++) {
-//             ftrace_write("%s, ", fun_name_stack[i]);
+//             log_write("%s, ", fun_name_stack[i]);
 //         }
-//         ftrace_write("\n\n");
+//         log_write("\n\n");
 //     } else {
 //         printf("Function call depth exceeds maximum limit!\n");
 //     }
@@ -101,11 +101,11 @@ static void Read_Symble(int file, Elf32_Ehdr eh, Elf32_Shdr sh_table[], int sym_
     char str_table[sh_table[sym_idx].sh_size];
     Check_Section(file, sh_table[str_idx], str_table);
     int sym_count = (sh_table[sym_idx].sh_size / sizeof(Elf32_Sym));
-    ftrace_write("=======Functions in the symbol table.======\n\n");
+    log_write("=======Functions in the symbol table.======\n\n");
     for(int i = 0; i < sym_count; i++){
         unsigned char type = ELF32_ST_TYPE(sym_table[i].st_info);
         if(type == STT_FUNC) {
-            ftrace_write("0x%08x: call [%s@0x%08x]\n", (unsigned int)sym_table[i].st_value, &str_table[sym_table[i].st_name], (unsigned int)sym_table[i].st_value);
+            log_write("0x%08x: call [%s@0x%08x]\n", (unsigned int)sym_table[i].st_value, &str_table[sym_table[i].st_name], (unsigned int)sym_table[i].st_value);
             strncpy(fun_list[fun_index].fun_name, &str_table[sym_table[i].st_name], 31); // 使用 strncpy 来复制字符串
             fun_list[fun_index].fun_name[31] = '\0'; // 确保字符串以 null 结尾
             fun_list[fun_index++].fun_addr = (unsigned int)sym_table[i].st_value;
@@ -113,10 +113,10 @@ static void Read_Symble(int file, Elf32_Ehdr eh, Elf32_Shdr sh_table[], int sym_
     }
 
     for(int i = 0; i < fun_index; i++){
-        ftrace_write("%s ", fun_list[i].fun_name);
+        log_write("%s ", fun_list[i].fun_name);
     }
 
-    ftrace_write("\n=======The invocation of the function======\n");
+    log_write("\n=======The invocation of the function======\n");
     S_table_size = sym_count;
     S_table = malloc(sizeof(Stm_Table)* sym_count);
     for(int i = 0; i < sym_count; i ++){
@@ -164,7 +164,7 @@ static int find_callfun(paddr_t target){
     int i;
     for(i = 0; i < fun_index; i ++){
         if(fun_list[i].fun_addr == target){
-            // ftrace_write("=============dnpc:0x%08x\n", target);
+            // log_write("=============dnpc:0x%08x\n", target);
             break;
         }
     }
@@ -182,7 +182,7 @@ void f_trace_call(paddr_t pc, paddr_t target){
     } else {
         fun_call_name = "???"; // 如果找不到，就设为 "???"
     }
-    ftrace_write("0x%08x: %*scall [%s@"FMT_PADDR "]\n",pc, Fun_depth, " ", fun_call_name, target);
+    log_write("0x%08x: %*scall [%s@"FMT_PADDR "]\n",pc, Fun_depth, " ", fun_call_name, target);
     push_fun_name(fun_call_name); // 将函数名压入栈
     // 每次压入后输出一次全栈内容
     
@@ -192,7 +192,7 @@ void f_trace_fun_ret(paddr_t pc){
     if(S_table == NULL || fun_name_stack_top == 0) return;
 
     char *fun_ret_name = pop_fun_name();
-    ftrace_write("0x%08x: %*sret  [%s]\n", pc, Fun_depth, " ", fun_ret_name);
+    log_write("0x%08x: %*sret  [%s]\n", pc, Fun_depth, " ", fun_ret_name);
 
     --Fun_depth;
     if(Fun_depth < 0) Fun_depth = 0;
