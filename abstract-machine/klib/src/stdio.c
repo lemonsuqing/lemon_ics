@@ -39,40 +39,65 @@ static int itoa(int n,char* s,int base)
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
-  
   char *start = out;
-    
-  for(;*fmt != '\0';++fmt){
-    if(*fmt != '%'){
+  for(; *fmt != '\0'; ++fmt) {
+    if(*fmt != '%') {
       *out = *fmt;
       ++out;
-    }
-    else{
-     switch(*(++fmt)){
-     case '%': *out = *fmt; ++out; break;
-     case 'd': out += itoa(va_arg(ap,int),out,10);break;
-     case 's':
+    } else {
+      switch(*(++fmt)) {
+        case '%': 
+          *out = *fmt; 
+          ++out; 
+          break;
+        case 'd': 
         {
-        char *s = va_arg(ap,char*);
-        strcpy(out,s);
-        out += strlen(out);
+            char temp[32];
+            itoa(va_arg(ap, int), temp, 10);
+            int len = strlen(temp);
+            if (len < 2) {
+                *out++ = ' ';
+                *out++ = temp[0];
+            } else {
+                strcpy(out, temp);
+                out += len;
+            }
         }
         break;
-     case 'c':
-       {
-          char c = (char)va_arg(ap,int);
-          *out++ = c;
-       }
-       break;
-     }
-     
+        case '2':
+          if (*(++fmt) == 'd') {
+              char temp[32];
+              itoa(va_arg(ap, int), temp, 10);
+              int len = strlen(temp);
+              if (len < 2) {
+                  *out++ = ' ';
+                  *out++ = temp[0];
+              } else {
+                  strcpy(out, temp);
+                  out += len;
+              }
+          }
+        break;
+        case 's':
+        {
+            char *s = va_arg(ap, char*);
+            strcpy(out, s);
+            out += strlen(out);
+        }
+        break;
+        case 'c':
+        {
+            char c = (char)va_arg(ap, int);
+            *out++ = c;
+        }
+        break;
+        }
     }
-   }
-    *out = '\0';
-
-    return out - start;
- // panic("Not implemented");
+  }
+  *out = '\0';
+  return out - start;
 }
+
 
 int printf(const char *fmt, ...) {
   char buf[1024];
