@@ -23,6 +23,11 @@ static int itoa(int n,char* s,int base)
   int i = 0,sign = n,bit;
   if(sign < 0) n = -n;
   do {
+   /*
+    bit = n % base;
+    if(bit>=0) s[i++] = 'a'+bit -10;
+    else s[i++] = '0' + bit;
+   */
    bit = n % base;
    s[i++] = '0' + bit;
   } while((n/=base)>0);
@@ -34,68 +39,61 @@ static int itoa(int n,char* s,int base)
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
+  
   char *start = out;
-  for(; *fmt != '\0'; ++fmt) {
-    if(*fmt != '%') {
+    
+  for(;*fmt != '\0';++fmt){
+    if(*fmt != '%'){
       *out = *fmt;
       ++out;
-    } else {
-      switch(*(++fmt)) {
-        case '%': 
-          *out = *fmt; 
-          ++out; 
-          break;
-        case 'd': 
-        {
-          char temp[32];
-          itoa(va_arg(ap, int), temp, 10);
-          int len = strlen(temp);
-          if (len < 2) {
-              *out++ = ' ';
-              *out++ = temp[0];
-          } else {
-              strcpy(out, temp);
-              out += len;
-          }
-        }
-        break;
-        case '2':
-          if (*(++fmt) == '2' && *(++fmt) == 'd') {
-            char temp[32];
-            itoa(va_arg(ap, int), temp, 10);
-            int len = strlen(temp);
-            if (len < 2) {
-              *out++ = '0';
-              *out++ = temp[0];
-            }else {
-              strcpy(out, temp);
-              out += len;
-            }
-          }
-        break;
-        case 's':
-        {
-            char *s = va_arg(ap, char*);
-            strcpy(out, s);
-            out += strlen(out);
-        }
-        break;
-        case 'c':
-        {
-            char c = (char)va_arg(ap, int);
-            *out++ = c;
-        }
-        break;
-        }
     }
-  }
-  *out = '\0';
-  return out - start;
+    else{
+     switch(*(++fmt)){
+     case '%': *out = *fmt; ++out; break;
+     case 'd': out += itoa(va_arg(ap,int),out,10);break;
+     case 's':
+        {
+        char *s = va_arg(ap,char*);
+        strcpy(out,s);
+        out += strlen(out);
+        }
+        break;
+     case 'c':
+       {
+          char c = (char)va_arg(ap,int);
+          *out++ = c;
+       }
+       break;
+    case 'p':
+       {
+           uintptr_t value = (uintptr_t)va_arg(ap, void*);
+          *out++ = '0';
+          *out++ = 'x';
+          for (int i = sizeof(void*) * 2 - 1; i >= 0; --i) {
+            // 获得当前十六进制位的字符
+            int current_digit = (value >> (4 * i)) & 0xF;
+            if (current_digit <= 9) {
+                // '0'到'9'之间
+                *out++ = '0' + current_digit;
+            } else {
+                // 'a'到'f'之间
+                *out++ = 'a' + (current_digit - 10);
+            }
+         }
+       }
+       break;
+     }
+     
+    }
+   }
+    *out = '\0';
+
+    return out - start;
+ // panic("Not implemented");
 }
 
-
 int printf(const char *fmt, ...) {
-  char buf[1024];
+  char buf[2048];
 	va_list ap;
 	va_start(ap, fmt);
 
@@ -104,6 +102,7 @@ int printf(const char *fmt, ...) {
 
 	va_end(ap);
 	return res;
+  //panic("Not implemented");
 }
 
 int sprintf(char *out, const char *fmt, ...) {
