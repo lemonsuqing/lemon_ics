@@ -50,7 +50,34 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
     else{
      switch(*(++fmt)){
      case '%': *out = *fmt; ++out; break;
-     case 'd': out += itoa(va_arg(ap,int),out,10);break;
+     case 'd':
+    {
+      int value = va_arg(ap, int);
+      char buffer[12]; // Buffer to hold the integer as a string
+      itoa(value, buffer, 10);
+      int width = 2; // The minimum width
+      char fill = ' '; // The fill character
+
+      // Check if the format is %02d or %2d
+      if (*(fmt - 1) == '0') {
+        fill = '0';
+      }
+
+      // Calculate the actual width of the integer
+      int actual_width = strlen(buffer);
+
+      // If the actual width is less than the minimum width, we need to add fill characters
+      if (actual_width < width) {
+          for (int i = 0; i < width - actual_width; ++i) {
+            *out++ = fill;
+          }
+        }
+
+        // Copy the integer to the output
+        strcpy(out, buffer);
+        out += actual_width;
+    }
+    break;
      case 's':
         {
         char *s = va_arg(ap,char*);
