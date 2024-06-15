@@ -23,11 +23,6 @@ static int itoa(int n,char* s,int base)
   int i = 0,sign = n,bit;
   if(sign < 0) n = -n;
   do {
-   /*
-    bit = n % base;
-    if(bit>=0) s[i++] = 'a'+bit -10;
-    else s[i++] = '0' + bit;
-   */
    bit = n % base;
    s[i++] = '0' + bit;
   } while((n/=base)>0);
@@ -52,30 +47,30 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           break;
         case 'd': 
         {
+          char temp[32];
+          itoa(va_arg(ap, int), temp, 10);
+          int len = strlen(temp);
+          if (len < 2) {
+              *out++ = ' ';
+              *out++ = temp[0];
+          } else {
+              strcpy(out, temp);
+              out += len;
+          }
+        }
+        break;
+        case '2':
+          if (*(++fmt) == '2' && *(++fmt) == 'd') {
             char temp[32];
             itoa(va_arg(ap, int), temp, 10);
             int len = strlen(temp);
             if (len < 2) {
-                *out++ = ' ';
-                *out++ = temp[0];
-            } else {
-                strcpy(out, temp);
-                out += len;
+              *out++ = '0';
+              *out++ = temp[0];
+            }else {
+              strcpy(out, temp);
+              out += len;
             }
-        }
-        break;
-        case '2':
-          if (*(++fmt) == 'd') {
-              char temp[32];
-              itoa(va_arg(ap, int), temp, 10);
-              int len = strlen(temp);
-              if (len < 2) {
-                  *out++ = ' ';
-                  *out++ = temp[0];
-              } else {
-                  strcpy(out, temp);
-                  out += len;
-              }
           }
         break;
         case 's':
@@ -109,7 +104,6 @@ int printf(const char *fmt, ...) {
 
 	va_end(ap);
 	return res;
-  //panic("Not implemented");
 }
 
 int sprintf(char *out, const char *fmt, ...) {
