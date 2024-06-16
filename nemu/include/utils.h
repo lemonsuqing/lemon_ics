@@ -17,6 +17,7 @@
 #define __UTILS_H__
 
 #include <common.h>
+#include <debug.h>
 
 // ----------- state -----------
 
@@ -63,6 +64,17 @@ uint64_t get_time();
     if (log_enable()) { \
       fprintf(log_fp, __VA_ARGS__); \
       fflush(log_fp); \
+    } \
+  } while (0) \
+)
+
+#define ftrace_write(...) IFDEF(CONFIG_TARGET_NATIVE_ELF, \
+  do { \
+    extern FILE* ftrace_fp; \
+    extern bool ftrace_enable(); \
+    if (ftrace_enable()) { \
+      fprintf(ftrace_fp, __VA_ARGS__); \
+      fflush(ftrace_fp); \
     } \
   } while (0) \
 )
