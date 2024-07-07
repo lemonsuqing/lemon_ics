@@ -19,12 +19,11 @@
 #include <common.h>
 
 typedef struct CSR_Reg{
-  word_t mepc;
-  word_t mstatus;
-  word_t mcause;
-  word_t mtvec;
+  word_t mepc;    // 存放触发异常的pc
+  word_t mstatus; // 存放处理器的状态
+  word_t mcause;  // 存放异常发生的原因
+  word_t mtvec;   // 中断/异常向量表基址寄存器
 }CSR_Reg;
-
 
 typedef struct {
   word_t gpr[MUXDEF(CONFIG_RVE, 16, 32)];
