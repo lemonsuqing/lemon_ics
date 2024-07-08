@@ -20,9 +20,9 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    * Then return the address of the interrupt/exception vector.
    */
 
-  if(NO==0){
-    epc+=4;
-  }
+  // if(NO==0){
+  //   epc+=4;
+  // }
   // cpu.csr.mstatus = 0x1800;
   cpu.csr.mcause = NO;   // 设置异常发生的原因
   cpu.csr.mepc = epc;    // 存放触发异常的pc值
