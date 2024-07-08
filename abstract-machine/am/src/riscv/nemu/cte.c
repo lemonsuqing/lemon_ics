@@ -18,7 +18,7 @@ Context* __am_irq_handle(Context *c) {
         printf("444\n");
         break;
     }
-    printf("mcause:0x%08x, mstatus:0x%08x, mepc:0x%08x",c->mcause,c->mstatus,c->mepc);
+    printf("mcause:0x%08x, mstatus:0x%08x, mepc:0x%08x\n",c->mcause,c->mstatus,c->mepc);
     c = user_handler(ev, c);
     assert(c != NULL);
   }
