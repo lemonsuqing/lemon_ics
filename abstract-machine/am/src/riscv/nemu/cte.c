@@ -19,7 +19,7 @@ Context* __am_irq_handle(Context *c) {
     c = user_handler(ev, c);
     assert(c != NULL);
   }
-  printf("%08x\n",c->mepc);
+  printf("%08x\n",c->gpr[7]);
   return c;
 }
 
