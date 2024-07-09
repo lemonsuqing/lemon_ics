@@ -15,11 +15,11 @@ Context* __am_irq_handle(Context *c) {
       default: ev.event = EVENT_ERROR;
         break;
     }
-    printf("mcause:0x%d, mstatus:0x%d, mepc:0x%d\n",c->mcause,c->mstatus,c->mepc);
+    printf("mcause:%d, mstatus:%d, mepc:%d\n",c->mcause,c->mstatus,c->mepc);
     c = user_handler(ev, c);
     assert(c != NULL);
   }
-  printf("%08x\n",c->gpr[7]);
+  printf("%d\n",c->gpr[7]);
   return c;
 }
 
