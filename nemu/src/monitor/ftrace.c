@@ -44,8 +44,6 @@ void push_fun_name(char *fun_name) {
     }
 }
 
-
-
 // 从栈中弹出函数名
 char* pop_fun_name() {
     if (fun_name_stack_top > 0) {
@@ -88,11 +86,11 @@ static void Read_Symble(int file, Elf32_Ehdr eh, Elf32_Shdr sh_table[], int sym_
     char str_table[sh_table[sym_idx].sh_size];
     Check_Section(file, sh_table[str_idx], str_table);
     int sym_count = (sh_table[sym_idx].sh_size / sizeof(Elf32_Sym));
-    log_write("=======Functions in the symbol table.======\n\n");
+    ftrace_write("=======Functions in the symbol table.======\n\n");
     for(int i = 0; i < sym_count; i++){
         unsigned char type = ELF32_ST_TYPE(sym_table[i].st_info);
         if(type == STT_FUNC) {
-            log_write("0x%08x: call [%s@0x%08x]\n", (unsigned int)sym_table[i].st_value, &str_table[sym_table[i].st_name], (unsigned int)sym_table[i].st_value);
+            ftrace_write("0x%08x: call [%s@0x%08x]\n", (unsigned int)sym_table[i].st_value, &str_table[sym_table[i].st_name], (unsigned int)sym_table[i].st_value);
             strncpy(fun_list[fun_index].fun_name, &str_table[sym_table[i].st_name], 31); // 使用 strncpy 来复制字符串
             fun_list[fun_index].fun_name[31] = '\0'; // 确保字符串以 null 结尾
             fun_list[fun_index++].fun_addr = (unsigned int)sym_table[i].st_value;
@@ -100,10 +98,10 @@ static void Read_Symble(int file, Elf32_Ehdr eh, Elf32_Shdr sh_table[], int sym_
     }
 
     for(int i = 0; i < fun_index; i++){
-        log_write("%s ", fun_list[i].fun_name);
+        ftrace_write("%s ", fun_list[i].fun_name);
     }
 
-    Log("\n=======The invocation of the function======\n");
+    ftrace_write("\n=======The invocation of the function======\n");
     S_table_size = sym_count;
     S_table = malloc(sizeof(Stm_Table)* sym_count);
     for(int i = 0; i < sym_count; i ++){
