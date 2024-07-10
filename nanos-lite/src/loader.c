@@ -17,9 +17,11 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   Elf_Phdr phdr[ehdr.e_phnum];
   ramdisk_read(phdr, ehdr.e_phoff, sizeof(Elf_Phdr)*ehdr.e_phnum);
+  printf("elf 1\n");
   for (int i = 0; i < ehdr.e_phnum; i++) {
     if (phdr[i].p_type == PT_LOAD) {
       ramdisk_read((void*)phdr[i].p_vaddr, phdr[i].p_offset, phdr[i].p_memsz);
+      printf("elf 2\n");
       // set .bss with zeros
       memset((void*)(phdr[i].p_vaddr+phdr[i].p_filesz), 0, phdr[i].p_memsz - phdr[i].p_filesz);
     }
