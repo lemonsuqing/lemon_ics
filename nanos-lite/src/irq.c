@@ -5,7 +5,7 @@ static Context* do_event(Event e, Context* c) {
     case 1:
       printf("e.event = 1\n");break;
     case 4:
-      printf("e.event = 4\n");break;
+      break;
     default: panic("Unhandled event ID = %d", e.event);
   }
   c->mepc+=4;
