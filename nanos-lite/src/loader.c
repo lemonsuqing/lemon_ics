@@ -11,6 +11,7 @@
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr ehdr;// ELF文件头
+  printf("123\n");
   // 可执行文件位于ramdisk偏移为0处，访问它就可以得到用户程序的第一个字节
   ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
   assert((*(uint32_t *)ehdr.e_ident == 0x464c457f));
