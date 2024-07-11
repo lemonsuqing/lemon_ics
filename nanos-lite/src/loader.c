@@ -15,7 +15,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   // 可执行文件位于ramdisk偏移为0处，访问它就可以得到用户程序的第一个字节
   ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
   assert((*(uint32_t *)ehdr.e_ident == 0x464c457f));
-  printf("TYPE %d \n",ehdr.e_type);
+  printf("TYPE:%d Phum:%d\n",ehdr.e_type, ehdr.e_phnum);
+
   Elf_Phdr phdr[ehdr.e_phnum];// 程序头表
   ramdisk_read(phdr, ehdr.e_phoff, sizeof(Elf_Phdr)*ehdr.e_phnum);
   for (int i = 0; i < ehdr.e_phnum; i++) {
