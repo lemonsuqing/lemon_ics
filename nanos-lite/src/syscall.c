@@ -9,6 +9,7 @@ void do_syscall(Context *c) {
       c->GPRx=0;
       // printf("SYS_exit, c->GPRx=%d\n",c->GPRx);
       halt(c->GPRx);
+      break;
     case 1://SYS_yield系统调用
       // printf("SYS_yield, c->GPRx=%d\n",c->GPRx);
       yield();break;
