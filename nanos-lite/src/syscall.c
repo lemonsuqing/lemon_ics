@@ -10,9 +10,9 @@ void do_syscall(Context *c) {
       // printf("SYS_exit, c->GPRx=%d\n",c->GPRx);
       halt(c->GPRx);
       break;
-    case 1://SYS_yield系统调用
-      // printf("SYS_yield, c->GPRx=%d\n",c->GPRx);
-      yield();break;
+    // case 1://SYS_yield系统调用
+    //   // printf("SYS_yield, c->GPRx=%d\n",c->GPRx);
+    //   yield();break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 }
