@@ -5,8 +5,13 @@ void do_syscall(Context *c) {
   a[0] = c->GPR1;
 
   switch (a[0]) {
-    case 0:c->GPRx=0;printf("SYS_exit, c->GPRx=%d\n",c->GPRx);halt(c->GPRx);//SYS_exit系统调用
-    case 1:printf("SYS_yield, c->GPRx=%d\n",c->GPRx);yield();break; //SYS_yield系统调用
+    case 0://SYS_exit系统调用
+      c->GPRx=0;
+      // printf("SYS_exit, c->GPRx=%d\n",c->GPRx);
+      halt(c->GPRx);
+    case 1://SYS_yield系统调用
+      // printf("SYS_yield, c->GPRx=%d\n",c->GPRx);
+      yield();break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 }
