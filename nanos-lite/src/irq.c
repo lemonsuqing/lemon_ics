@@ -1,7 +1,6 @@
 #include <common.h>
 
 static Context* do_event(Event e, Context* c) {
-   printf("do_event\n");
   // printf("do_event's e.event=%d\n",e.event);
   switch (e.event) {
     case 1:// yeild

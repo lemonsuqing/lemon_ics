@@ -1,9 +1,8 @@
 #include <common.h>
 #include "syscall.h"
 void do_syscall(Context *c) {
-  printf("do_syscall\n");
   uintptr_t a[4];
-  a[0] = c->GPR1;
+  a[0] = c->GPR1;//存储系统调用的类型
 
   switch (a[0]) {
     case 0://SYS_exit系统调用
