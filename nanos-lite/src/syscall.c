@@ -5,14 +5,14 @@ void do_syscall(Context *c) {
   a[0] = c->GPR1;//存储系统调用的类型
   printf("a[0] = %d\n", a[0]);
   switch (a[0]) {
-    case 0://SYS_exit系统调用
+    case 0:// SYS_exit
       c->GPRx=0;
-      // printf("SYS_exit, c->GPRx=%d\n",c->GPRx);
       halt(c->GPRx);
       break;
-    case 1://SYS_yield系统调用
-      // printf("SYS_yield, c->GPRx=%d\n",c->GPRx);
+    case 1:// SYS_yield
       yield();break;
+    case 4:// SYS_write
+      printf("132132\n");
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 }
