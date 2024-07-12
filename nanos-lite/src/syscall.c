@@ -1,9 +1,8 @@
 #include <common.h>
 #include "syscall.h"
 
-
 void SYS_write(intptr_t *buf, size_t count){
-      for (int i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++) {
     putch(*((char*)buf + i));
   }
 }
