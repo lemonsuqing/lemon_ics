@@ -22,7 +22,7 @@ void do_syscall(Context *c) {
       SYS_write((intptr_t *)(c->GPR2),c->GPR3);
       break;
     case 9:// SYS_brk
-      // 维护并更新program break
+      // 若SYS_brk系统调用成功, 该系统调用会返回0。
       c->GPRx=0;
       break;
     default: panic("Unhandled syscall ID = %d", a[0]);
