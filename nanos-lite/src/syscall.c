@@ -11,7 +11,7 @@ void do_syscall(Context *c) {
     case 1:// SYS_yield
       yield();break;
     case 4:// SYS_write
-      yield();break;
+      break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 }
