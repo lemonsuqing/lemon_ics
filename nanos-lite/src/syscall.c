@@ -21,6 +21,9 @@ void do_syscall(Context *c) {
     case 4:// SYS_write
       SYS_write((intptr_t *)(c->GPR2),c->GPR3);
       break;
+    case 9:// SYS_brk
+      // 维护并更新program break
+      c->GPRx=0;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 }
