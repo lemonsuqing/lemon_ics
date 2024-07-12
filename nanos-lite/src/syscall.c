@@ -12,9 +12,9 @@ void do_syscall(Context *c) {
   a[0] = c->GPR1;//存储系统调用的类型
   switch (a[0]) {
     case 0:// SYS_exit
-      // c->GPRx=0;
-      // halt(c->GPRx);
-      halt(0);
+      c->GPRx=0;
+      halt(c->GPRx);
+      // halt(0);
       break;
     case 1:// SYS_yield
       yield();break;
