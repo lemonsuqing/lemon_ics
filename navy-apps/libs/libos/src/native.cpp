@@ -220,6 +220,7 @@ ssize_t read(int fd, void *buf, size_t count) {
 ssize_t write(int fd, const void *buf, size_t count) {
   if (fd == sbctl_fd) {
     // open audio
+    printf("open audio\n");
     const int *args = (const int *)buf;
     assert(count >= sizeof(int) * 3);
     SDL_InitSubSystem(SDL_INIT_AUDIO);
