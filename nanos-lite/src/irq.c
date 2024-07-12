@@ -9,9 +9,7 @@ static Context* do_event(Event e, Context* c) {
     case 2:// syscall
       do_syscall(c);break;//EVENT_SYSCALL
 
-    case 4:// write
-      do_syscall(c);
-      break;
+
     default: panic("Unhandled event ID = %d", e.event);
   }
   c->mepc+=4;
