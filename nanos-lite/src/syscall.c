@@ -1,7 +1,7 @@
 #include <common.h>
 #include "syscall.h"
 
-void SYS_write(intptr_t *buf, size_t count){
+void Sys_Write(intptr_t *buf, size_t count){
   for (int i = 0; i < count; i++) {
     putch(*((char*)buf + i));
   }
@@ -19,7 +19,7 @@ void do_syscall(Context *c) {
     case 1:// SYS_yield
       yield();break;
     case 4:// SYS_write
-      SYS_write((intptr_t *)(c->GPR2),c->GPR3);
+      Sys_Write((intptr_t *)(c->GPR2),c->GPR3);
       break;
     case 9:// SYS_brk
       // 若SYS_brk系统调用成功, 该系统调用会返回0。
