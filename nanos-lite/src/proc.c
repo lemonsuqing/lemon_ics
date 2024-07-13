@@ -23,7 +23,7 @@ void init_proc() {
   switch_boot_pcb();
 
   Log("Initializing processes...");
-  naive_uload(current, "/bin/hello");
+  naive_uload(current, "/share/fonts/Courier-11.bdf");
   // load program here
 
 }
