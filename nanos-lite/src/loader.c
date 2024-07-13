@@ -1,5 +1,6 @@
 #include <proc.h>
 #include <elf.h>
+#include <common.h>
 
 #ifdef __LP64__
 # define Elf_Ehdr Elf64_Ehdr
@@ -10,23 +11,42 @@
 #endif
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  Elf_Ehdr ehdr;// ELF文件头
-  // 可执行文件位于ramdisk偏移为0处，访问它就可以得到用户程序的第一个字节
-  ramdisk_read(&ehdr, 0, sizeof(Elf_Ehdr));
-  assert((*(uint32_t *)ehdr.e_ident == 0x464c457f));
-//  printf("TYPE:%d Phum:%d\n",ehdr.e_type, ehdr.e_phnum);
-
-  Elf_Phdr phdr[ehdr.e_phnum];// 程序头表
-  ramdisk_read(phdr, ehdr.e_phoff, sizeof(Elf_Phdr)*ehdr.e_phnum);
-//  printf("TYPE:%d Phum:%d\n",phdr->p_type, phdr->p_memsz);
-  for (int i = 0; i < ehdr.e_phnum; i++) {
-    if (phdr[i].p_type == PT_LOAD) {
-      ramdisk_read((void*)phdr[i].p_vaddr, phdr[i].p_offset, phdr[i].p_memsz);
-      // set .bss with zeros
-      memset((void*)(phdr[i].p_vaddr+phdr[i].p_filesz), 0, phdr[i].p_memsz - phdr[i].p_filesz);
+  
+  int fd = fs_open(filename, 0, 0);
+  if (fd < 0) {
+    panic("should not reach here");
+  }
+  Elf_Ehdr elf;
+ 
+  assert(fs_read(fd, &elf, sizeof(elf)) == sizeof(elf));
+  // 检查魔数
+  assert(*(uint32_t *)elf.e_ident == 0x464c457f);
+  
+  Elf_Phdr phdr;
+  for (int i = 0; i < elf.e_phnum; i++) {
+    uint32_t base = elf.e_phoff + i * elf.e_phentsize;
+ 
+    fs_lseek(fd, base, 0);
+    assert(fs_read(fd, &phdr, elf.e_phentsize) == elf.e_phentsize);
+    
+    // 需要装载的段
+    if (phdr.p_type == PT_LOAD) {
+ 
+      char * buf_malloc = (char *)malloc(phdr.p_filesz);
+ 
+      fs_lseek(fd, phdr.p_offset, 0);
+      assert(fs_read(fd, buf_malloc, phdr.p_filesz) == phdr.p_filesz);
+      
+      memcpy((void*)phdr.p_vaddr, buf_malloc, phdr.p_filesz);
+      memset((void*)phdr.p_vaddr + phdr.p_filesz, 0, phdr.p_memsz - phdr.p_filesz);
+      
+      free(buf_malloc);
     }
   }
-  return ehdr.e_entry;
+ 
+  assert(fs_close(fd) == 0);
+  
+  return elf.e_entry;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
