@@ -28,7 +28,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   }
   else{
     int res = snprintf((char *)buf, len, "%s %s\n", t.keydown ? "kd" : "ku", keyname[t.keycode]);
-    printf("%s\n", buf);
+    printf("%s\n", t.keydown);
     return res;
   }
   
