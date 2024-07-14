@@ -25,12 +25,12 @@ void do_syscall(Context *c) {
       halt(c->GPRx);
       // halt(0);
       break;
-    case 1:// SYS_yield
+    case SYS_yield:// SYS_yield
       yield();break;
-    case 4:// SYS_write
+    case SYS_write:// SYS_write
       Sys_Write((intptr_t *)(c->GPR2),c->GPR3);
       break;
-    case 9:// SYS_brk
+    case SYS_brk:// SYS_brk
       // 若SYS_brk系统调用成功, 该系统调用会返回0。
       c->GPRx=0;
       break;
