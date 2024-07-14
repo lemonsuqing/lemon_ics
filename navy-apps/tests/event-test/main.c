@@ -7,6 +7,7 @@ int main() {
     char buf[64];
     printf("1\n");
     if (NDL_PollEvent(buf, sizeof(buf))) {
+      printf("1\n");
       printf("receive event: %s\n", buf);
     }
   }
