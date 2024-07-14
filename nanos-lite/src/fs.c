@@ -15,7 +15,7 @@ typedef struct {
   size_t open_offset; // 当前读写位置
 } Finfo;
 
-enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB};
+enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_EVENT, FD_FB};
 
 int fs_open(const char *pathname, int flags, int mode);
 size_t fs_read(int fd, void *buf, size_t len);
@@ -35,9 +35,10 @@ size_t invalid_write(const void *buf, size_t offset, size_t len) {
 
 /* This is the information about all files in disk. */
 static Finfo file_table[] __attribute__((used)) = {
-  [FD_STDIN]  = {"stdin", 0, 0, events_read, invalid_write},
+  [FD_STDIN]  = {"stdin", 0, 0, invalid_read, invalid_write},
   [FD_STDOUT] = {"stdout", 0, 0, invalid_read, serial_write},
   [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
+  [FD_EVENT]  = {"/dev/events", 0, 0, events_read ,invalid_write},
 #include "files.h"
 };
 
@@ -68,14 +69,7 @@ size_t fs_read(int fd, void *buf, size_t len){
   size_t disk_offset = file_table[fd].disk_offset; // 文件在ramdisk中的偏移
   if(open_offset > size) return 0;
   if(open_offset + len > size) read_len = size - open_offset;
-  if(file_table[fd].read == NULL){
-    printf("in the read option\n");
-    ramdisk_read(buf, disk_offset + open_offset, read_len);
-  }
-  else{
-    printf("in the read option\n");
-    file_table[fd].read(buf, disk_offset + open_offset, read_len);
-  }
+  ramdisk_read(buf, disk_offset + open_offset, read_len);
   file_table[fd].open_offset += read_len;
   return read_len; // 返回实际读取的字节数
 }
