@@ -174,7 +174,9 @@ int sprintf(char *out, const char *fmt, ...) {
 
            
 int snprintf(char *out, size_t n, const char *fmt, ...) {
-  panic("Not implemented");
+  for(int i = 0; i < n ; i ++)
+    sprintf(out, fmt);
+  return 0;
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
