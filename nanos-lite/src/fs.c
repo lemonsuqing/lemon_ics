@@ -35,7 +35,7 @@ size_t invalid_write(const void *buf, size_t offset, size_t len) {
 
 /* This is the information about all files in disk. */
 static Finfo file_table[] __attribute__((used)) = {
-  [FD_STDIN]  = {"stdin", 0, 0, invalid_read, invalid_write},
+  [FD_STDIN]  = {"stdin", 0, 0, events_read, invalid_write},
   [FD_STDOUT] = {"stdout", 0, 0, invalid_read, serial_write},
   [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
 #include "files.h"
@@ -68,10 +68,10 @@ size_t fs_read(int fd, void *buf, size_t len){
   size_t disk_offset = file_table[fd].disk_offset; // 文件在ramdisk中的偏移
   if(open_offset > size) return 0;
   if(open_offset + len > size) read_len = size - open_offset;
-  if(fd == 25)
-    events_read(buf, disk_offset + open_offset, read_len);
-  else
-    ramdisk_read(buf, disk_offset + open_offset, read_len);
+  if(file_table[fd].read != NULL){
+    file_table[fd].read(buf, disk_offset + open_offset, read_len);
+  }
+  ramdisk_read(buf, disk_offset + open_offset, read_len);
   file_table[fd].open_offset += read_len;
   return read_len; // 返回实际读取的字节数
 }
