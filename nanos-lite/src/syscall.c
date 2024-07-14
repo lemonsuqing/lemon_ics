@@ -1,10 +1,18 @@
 #include <common.h>
 #include "syscall.h"
+#include <sys/time.h>
 
 void Sys_Write(intptr_t *buf, size_t count){
   for (int i = 0; i < count; i++) {
     putch(*((char*)buf + i));
   }
+}
+
+int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
+    uint64_t us = io_read(AM_TIMER_UPTIME).us;
+    tv->tv_sec = us / 1000000;
+    tv->tv_usec = us - us / 1000000 * 1000000;
+    return 0;
 }
 
 void do_syscall(Context *c) {
@@ -27,6 +35,7 @@ void do_syscall(Context *c) {
       c->GPRx=0;
       break;
     case SYS_gettimeofday:
+      sys_gettimeofday((struct timeval *)(c->GPR2),(struct timezone *)(c->GPR3));
       break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
