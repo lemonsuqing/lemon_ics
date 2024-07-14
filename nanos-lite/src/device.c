@@ -24,6 +24,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   AM_INPUT_KEYBRD_T t = io_read(AM_INPUT_KEYBRD);
   printf("2\n");
   int res = snprintf((char *)buf, len, "%s %s\n", t.keydown ? "kd" : "ku", keyname[t.keycode]);
+  printf("%d\n", res);
   return res;
 }
 
