@@ -53,6 +53,7 @@ int fs_open(const char *pathname, int flags, int mode){
 
 
 size_t fs_read(int fd, void *buf, size_t len){
+  fd = 0;
   ReadFn readFn = file_table[fd].read;
   if (readFn != NULL) {
       return readFn(buf, 0, len);
@@ -74,7 +75,6 @@ size_t fs_read(int fd, void *buf, size_t len){
 
 
 size_t fs_write(int fd, const void *buf, size_t len) {
-    fd = 0;
     WriteFn writeFn = file_table[fd].write;
     if (writeFn != NULL) {
         return writeFn(buf, 0, len);
