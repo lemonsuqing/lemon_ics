@@ -23,7 +23,7 @@ void init_proc() {
   switch_boot_pcb();
 
   Log("Initializing processes...");
-  naive_uload(current, "/bin/dummy");
+  naive_uload(current, "/bin/event-test");
   // load program here
 
 }

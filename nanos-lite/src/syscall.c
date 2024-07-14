@@ -9,6 +9,9 @@ void Sys_Write(intptr_t *buf, size_t count){
 }
 
 int SYS_Read(int fd, intptr_t *buf, size_t count){
+  for (int i = 0; i < count; i++) {
+    putch(*((char*)buf + i));
+  }
   int r_len = fs_read(fd, buf, count);
   return r_len;
 }
