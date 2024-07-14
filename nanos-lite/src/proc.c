@@ -23,7 +23,7 @@ void init_proc() {
   switch_boot_pcb();
 
   Log("Initializing processes...");
-  naive_uload(current, "/bin/timer-test");
+  naive_uload(current, "/bin/event-test");
   // load program here
 
 }
