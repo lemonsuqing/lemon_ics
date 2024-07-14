@@ -10,8 +10,8 @@ int main() {
     while (1) {
         gettimeofday(&tv, &tz);
         if (tv.tv_sec >= last_time + 5) {
-            printf("当前时间: %ld秒, %ld微秒\n", tv.tv_sec, tv.tv_usec);
-            printf("距离上一次获取的间隔为5秒\n");
+            printf("Now Time: %lds, %ldus\n", tv.tv_sec, tv.tv_usec);
+            printf("5 seconds later\n");
             last_time = tv.tv_sec;
         }
     }
