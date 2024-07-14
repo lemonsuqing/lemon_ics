@@ -18,6 +18,7 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
+  printf("133\n");
   return 0;
 }
 
