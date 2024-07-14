@@ -10,8 +10,8 @@ typedef struct {
   char *name;         // 文件名
   size_t size;        // 文件大小
   size_t disk_offset; // 文件在ramdisk中的偏移
-  ReadFn read;
-  WriteFn write;
+  ReadFn read;        // 读函数指针
+  WriteFn write;      // 写函数指针
   size_t open_offset; // 当前读写位置
 } Finfo;
 
@@ -36,8 +36,8 @@ size_t invalid_write(const void *buf, size_t offset, size_t len) {
 /* This is the information about all files in disk. */
 static Finfo file_table[] __attribute__((used)) = {
   [FD_STDIN]  = {"stdin", 0, 0, invalid_read, invalid_write},
-  [FD_STDOUT] = {"stdout", 0, 0, invalid_read, invalid_write},
-  [FD_STDERR] = {"stderr", 0, 0, invalid_read, invalid_write},
+  [FD_STDOUT] = {"stdout", 0, 0, invalid_read, serial_write},
+  [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
 #include "files.h"
 };
 
@@ -53,6 +53,10 @@ int fs_open(const char *pathname, int flags, int mode){
 
 
 size_t fs_read(int fd, void *buf, size_t len){
+  ReadFn readFn = file_table[fd].read;
+  if (readFn != NULL) {
+      return readFn(buf, 0, len);
+  }
   if(fd <= 2){
     Log("Ignore read %s", file_table[fd].name);
     return 0;
@@ -70,6 +74,10 @@ size_t fs_read(int fd, void *buf, size_t len){
 
 
 size_t fs_write(int fd, const void *buf, size_t len) {
+    WriteFn writeFn = file_table[fd].write;
+    if (writeFn != NULL) {
+        return writeFn(buf, 0, len);
+    }
     if (fd == 0) {
         Log("ignore write %s", file_table[fd].name);
         return 0;
