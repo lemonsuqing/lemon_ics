@@ -26,6 +26,8 @@ void do_syscall(Context *c) {
       // 若SYS_brk系统调用成功, 该系统调用会返回0。
       c->GPRx=0;
       break;
+    case SYS_gettimeofday:
+      break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 }
