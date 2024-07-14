@@ -10,8 +10,6 @@ void Sys_Write(intptr_t *buf, size_t count){
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;//存储系统调用的类型
-  printf("a[0] = %d \n", a[0]);
-  printf("a[1] = %d \n", c->GPR2);
   switch (a[0]) {
     case 0:// SYS_exit
       c->GPRx=0;
