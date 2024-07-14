@@ -8,6 +8,12 @@ void Sys_Write(intptr_t *buf, size_t count){
   }
 }
 
+void SYS_Read(intptr_t *buf, size_t count){
+  for (int i = 0; i < count; i++) {
+    putch(*((char*)buf + i));
+  }
+}
+
 int sys_gettimeofday(struct timeval *tv, struct timezone *tz) {
     uint64_t us = io_read(AM_TIMER_UPTIME).us;
     tv->tv_sec = us / 1000000;
@@ -31,6 +37,9 @@ void do_syscall(Context *c) {
       break;
     case SYS_brk:
       c->GPRx=0;
+      break;
+    case SYS_read:
+      SYS_Read((intptr_t *)(c->GPR2),c->GPR3);
       break;
     case SYS_gettimeofday:
       c->GPRx = sys_gettimeofday((struct timeval *)(c->GPR2),(struct timezone *)(c->GPR3));
