@@ -1,7 +1,7 @@
 #include <fs.h>
 #include <common.h>
 
-#define NR_FILES 24
+#define NR_FILES 25
 
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
