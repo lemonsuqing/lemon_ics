@@ -61,14 +61,17 @@ size_t fs_read(int fd, void *buf, size_t len){
     Log("Ignore read %s", file_table[fd].name);
     return 0;
   }
-  printf("file %d\n", fd);
+  
   size_t read_len = len;
   size_t size = file_table[fd].size;
   size_t open_offset = file_table[fd].open_offset; // 当前读写位置
   size_t disk_offset = file_table[fd].disk_offset; // 文件在ramdisk中的偏移
   if(open_offset > size) return 0;
   if(open_offset + len > size) read_len = size - open_offset;
-  ramdisk_read(buf, disk_offset + open_offset, read_len);
+  if(fd == 25)
+    events_read(buf, disk_offset + open_offset, read_len);
+  else
+    ramdisk_read(buf, disk_offset + open_offset, read_len);
   file_table[fd].open_offset += read_len;
   return read_len; // 返回实际读取的字节数
 }
