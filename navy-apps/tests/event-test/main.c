@@ -2,7 +2,7 @@
 #include <NDL.h>
 
 int main() {
-  NDL_Init(0);
+  NDL_Init(3);
   while (1) {
     char buf[64];
 
