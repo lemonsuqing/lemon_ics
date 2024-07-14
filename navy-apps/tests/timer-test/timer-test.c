@@ -9,9 +9,10 @@ int main() {
 
     while (1) {
         gettimeofday(&tv, &tz);
-        if (tv.tv_sec >= last_time + 5) {
+        double time_interval = (double)(tv.tv_sec - last_time);
+        if (time_interval >= 0.5) {
             printf("Now Time: %lds, %ldus\n", tv.tv_sec, tv.tv_usec);
-            printf("5 seconds later\n");
+            printf("0.5 seconds later\n");
             last_time = tv.tv_sec;
         }
     }
