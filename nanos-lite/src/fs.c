@@ -61,6 +61,7 @@ size_t fs_read(int fd, void *buf, size_t len){
     Log("Ignore read %s", file_table[fd].name);
     return 0;
   }
+  printf("file %d\n", fd);
   size_t read_len = len;
   size_t size = file_table[fd].size;
   size_t open_offset = file_table[fd].open_offset; // 当前读写位置
