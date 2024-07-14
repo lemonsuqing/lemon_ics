@@ -69,6 +69,7 @@ size_t fs_read(int fd, void *buf, size_t len){
   if(open_offset > size) return 0;
   if(open_offset + len > size) read_len = size - open_offset;
   if(file_table[fd].read != NULL){
+    printf("in the read option\n");
     file_table[fd].read(buf, disk_offset + open_offset, read_len);
   }
   ramdisk_read(buf, disk_offset + open_offset, read_len);
