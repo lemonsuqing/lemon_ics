@@ -53,7 +53,7 @@ int fs_open(const char *pathname, int flags, int mode){
 
 
 size_t fs_read(int fd, void *buf, size_t len){
-  fd = 0;
+  fd = 22;
   ReadFn readFn = file_table[fd].read;
   if (readFn != NULL) {
       return readFn(buf, 0, len);
