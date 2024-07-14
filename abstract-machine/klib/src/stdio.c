@@ -174,9 +174,9 @@ int sprintf(char *out, const char *fmt, ...) {
 
            
 int snprintf(char *out, size_t n, const char *fmt, ...) {
-  // char str[1024];
-  // sprintf(str, fmt);
-  // strncmp(str, out , n);
+  char str[1024];
+  sprintf(str, fmt);
+  strncmp(str, out , n);
   return 0;
 }
 
