@@ -20,18 +20,16 @@ void do_syscall(Context *c) {
   a[0] = c->GPR1;//存储系统调用的类型
   // printf("a[0] = %d\n", a[0]);
   switch (a[0]) {
-    case 0:// SYS_exit
+    case SYS_exit:
       c->GPRx=0;
       halt(c->GPRx);
-      // halt(0);
       break;
-    case SYS_yield:// SYS_yield
+    case SYS_yield:
       yield();break;
-    case SYS_write:// SYS_write
+    case SYS_write:
       Sys_Write((intptr_t *)(c->GPR2),c->GPR3);
       break;
-    case SYS_brk:// SYS_brk
-      // 若SYS_brk系统调用成功, 该系统调用会返回0。
+    case SYS_brk:
       c->GPRx=0;
       break;
     case SYS_gettimeofday:
