@@ -15,7 +15,7 @@ typedef struct {
   size_t open_offset; // 当前读写位置
 } Finfo;
 
-enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_EVENT, FD_FB};
+enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_EVENT, FD_DISPINFO, FD_FB};
 
 int fs_open(const char *pathname, int flags, int mode);
 size_t fs_read(int fd, void *buf, size_t len);
@@ -39,6 +39,7 @@ static Finfo file_table[] __attribute__((used)) = {
   [FD_STDOUT] = {"stdout", 0, 0, invalid_read, serial_write},
   [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
   [FD_EVENT]  = {"/dev/events", 0, 0, events_read ,invalid_write},
+  [FD_DISPINFO]  = {"/proc/dispinfo", 0, 0, invalid_read, invalid_write},
 #include "files.h"
 };
 
