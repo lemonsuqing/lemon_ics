@@ -6,6 +6,10 @@
 #include <sys/time.h>
 #include <time.h>
 #include <assert.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 
 static int evtdev = -1;
 static int fbdev = -1;
@@ -23,8 +27,6 @@ int NDL_PollEvent(char *buf, int len) {
   return r_len;
 }
 
-//屏幕大小
-static int screen_w = 0, screen_h = 0;
 //画布大小
 static int canvas_w=0,canvas_h=0;
 //相对于屏幕左上角的画布位置坐标
@@ -99,7 +101,12 @@ if (*w == 0 && *h == 0) {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-
+  int fd = open("/dev/fb", 0, 0);
+  for (int i = 0; i < h && y + i < canvas_h; ++i) {
+    lseek(fd, ((y + canvas_y + i) * screen_w + (x + canvas_x)) * 4, SEEK_SET);
+    write(fd, pixels + i * w, 4 * (w < canvas_w - x ? w : canvas_w - x));
+  }
+  assert(close(fd) == 0);
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
