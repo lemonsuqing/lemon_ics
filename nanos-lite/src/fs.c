@@ -1,7 +1,7 @@
 #include <fs.h>
 #include <common.h>
 
-#define NR_FILES 30
+// #define NR_FILES 30
 
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
@@ -44,13 +44,15 @@ static Finfo file_table[] __attribute__((used)) = {
 #include "files.h"
 };
 
+#define NR_FILES (sizeof(file_table) / sizeof(file_table[0]))
+
 int fs_open(const char *pathname, int flags, int mode){
-  for(int i = 3; i < NR_FILES; i++){// 跳过stdin、stdout、stderr
-    if(strcmp(file_table[i].name, pathname) == 0){
-      file_table[i].open_offset = 0;
-      return i;
+  for (int i = 0; i < NR_FILES; i++) {
+        if (strcmp(file_table[i].name, pathname) == 0) {
+            file_table[i].open_offset = 0;
+            return i;
+        }
     }
-  }
   panic("file %s not found", pathname);
 }
 
@@ -58,9 +60,9 @@ int fs_open(const char *pathname, int flags, int mode){
 size_t fs_read(int fd, void *buf, size_t len){
   ReadFn readFn = file_table[fd].read;
   if (readFn != NULL) {
-        // 特殊文件处理
-        size_t open_offset = file_table[fd].open_offset;
-        return readFn(buf, open_offset, len);
+    // 特殊文件处理
+    size_t open_offset = file_table[fd].open_offset;
+    return readFn(buf, open_offset, len);
   }
   size_t read_len = len;
   size_t open_offset = file_table[fd].open_offset;
@@ -71,9 +73,7 @@ size_t fs_read(int fd, void *buf, size_t len){
   ramdisk_read(buf, disk_offset + open_offset, read_len);
   file_table[fd].open_offset += read_len;
   return read_len;
-
 }
-
 
 size_t fs_write(int fd, const void *buf, size_t len) {
     WriteFn writeFn = file_table[fd].write;
