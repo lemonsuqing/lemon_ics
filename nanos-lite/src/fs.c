@@ -101,13 +101,13 @@ size_t fs_write(int fd, const void *buf, size_t len) {
     file_table[fd].open_offset += write_len;
     return write_len;
 }
- 
+
 size_t fs_lseek(int fd, size_t offset, int whence){
   if (fd <= 2) {
         Log("ignore lseek %s", file_table[fd].name);
         return 0;
   }
- 
+
   Finfo *file = &file_table[fd];
   size_t new_offset;
   // 根据 whence 参数来计算新的指针位置
@@ -137,15 +137,12 @@ size_t fs_lseek(int fd, size_t offset, int whence){
     return new_offset;
 }
 
-
 int fs_close(int fd){
   return 0;
 }
 
 void init_fs() {
   // TODO: initialize the size of /dev/fb
-  AM_GPU_CONFIG_T ev = io_read(AM_GPU_CONFIG);
-  int width = ev.width;
-  int height = ev.height;
-  file_table[FD_FB].size = width * height * sizeof(uint32_t);
+   AM_GPU_CONFIG_T ev = io_read(AM_GPU_CONFIG);
+  file_table[FD_FB].size = ev.vmemsz;
 }
