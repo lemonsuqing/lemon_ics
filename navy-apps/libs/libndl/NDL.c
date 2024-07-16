@@ -22,7 +22,7 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
-  printf("evtdev = %d\n", evtdev);
+  // printf("evtdev = %d\n", evtdev);
   int r_len = read(evtdev, buf, len);
   return r_len;
 }
@@ -154,6 +154,7 @@ int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
+  printf("evtdev = %d\n", evtdev);
   if(flags == 3){
     evtdev = 3;
   }
