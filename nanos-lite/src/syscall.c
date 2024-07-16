@@ -38,8 +38,8 @@ void do_syscall(Context *c) {
       c->GPRx=0;
       break;
     case SYS_read:
-      c->GPRx = fs_read(c->GPR2, (void *)c->GPR3, (size_t)c->GPR4);
-      // c->GPRx = SYS_Read((int)(c->GPR2), (intptr_t *)(c->GPR3), (size_t)(c->GPR4));
+      // c->GPRx = fs_read(c->GPR2, (void *)c->GPR3, (size_t)c->GPR4);
+      c->GPRx = SYS_Read((int)(c->GPR2), (intptr_t *)(c->GPR3), (size_t)(c->GPR4));
       break;
     case SYS_gettimeofday:
       c->GPRx = sys_gettimeofday((struct timeval *)(c->GPR2),(struct timezone *)(c->GPR3));

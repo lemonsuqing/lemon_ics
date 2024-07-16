@@ -58,22 +58,20 @@ int fs_open(const char *pathname, int flags, int mode){
 size_t fs_read(int fd, void *buf, size_t len){
   ReadFn readFn = file_table[fd].read;
   if (readFn != NULL) {
-      return readFn(buf, 0, len);
+        // 特殊文件处理
+        size_t open_offset = file_table[fd].open_offset;
+        return readFn(buf, open_offset, len);
   }
-  if(fd <= 2){
-    Log("Ignore read %s", file_table[fd].name);
-    return 0;
-  }
-  
   size_t read_len = len;
+  size_t open_offset = file_table[fd].open_offset;
   size_t size = file_table[fd].size;
-  size_t open_offset = file_table[fd].open_offset; // 当前读写位置
-  size_t disk_offset = file_table[fd].disk_offset; // 文件在ramdisk中的偏移
-  if(open_offset > size) return 0;
-  if(open_offset + len > size) read_len = size - open_offset;
+  size_t disk_offset = file_table[fd].disk_offset;
+  if (open_offset > size) return 0;
+  if (open_offset + len > size) read_len = size - open_offset;
   ramdisk_read(buf, disk_offset + open_offset, read_len);
   file_table[fd].open_offset += read_len;
-  return read_len; // 返回实际读取的字节数
+  return read_len;
+
 }
 
 
