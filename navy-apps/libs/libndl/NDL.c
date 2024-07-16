@@ -133,6 +133,9 @@ int NDL_Init(uint32_t flags) {
   if(flags == 4){
     evtdev = 4;
   }
+  if(flags == 5){
+    evtdev = 5;
+  }
 
   return 0;
 }
