@@ -32,15 +32,51 @@ static int canvas_w=0,canvas_h=0;
 //相对于屏幕左上角的画布位置坐标
 static int canvas_x=0,canvas_y=0;
 
+// 打开一张(*w) X (*h)的画布
+// 如果*w和*h均为0, 则将系统全屏幕作为画布, 并将*w和*h分别设为系统屏幕的大小
+// 目前NDL_OpenCanvas()只需要记录画布的大小就可以了, 当然我们要求画布大小不能超过屏幕大小
 void NDL_OpenCanvas(int *w, int *h) {
   if (getenv("NWM_APP")) {
-     int buf_size = 1024; 
+    int fbctl = 4;
+    fbdev = 5;
+    screen_w = *w; screen_h = *h;
+    char buf[64];
+    int len = sprintf(buf, "%d %d", screen_w, screen_h);
+    // let NWM resize the window and create the frame buffer
+    write(fbctl, buf, len);
+    while (1) {
+      // 3 = evtdev
+      int nread = read(3, buf, sizeof(buf) - 1);
+      if (nread <= 0) continue;
+      buf[nread] = '\0';
+      if (strcmp(buf, "mmap ok") == 0) break;
+    }
+    close(fbctl);
+  }
+
+   // NWM_APP logic ... 
+
+  if (*w == 0 && *h == 0) {
+    *w = screen_w;
+    *h = screen_h;
+  }
+  canvas_w = *w;
+  canvas_h = *h;
+  canvas_x=(screen_w - canvas_w) / 2;
+  canvas_y=(screen_h - canvas_h) / 2;
+  printf("画布的大小为宽%d X 高%d\n",canvas_w,canvas_h);
+  printf("相对于屏幕左上角的画布位置坐标x:%d,y:%d\n",canvas_x,canvas_y);
+}
+
+//解析 /proc/dispinfo 文件的内容，并写入 screen_w 和 screen_h，作为屏幕大小：
+static void init_dispinfo() {
+  int buf_size = 1024; 
   char * buf = (char *)malloc(buf_size * sizeof(char));
   int fd = open("/proc/dispinfo", 0, 0);
   int ret = read(fd, buf, buf_size);
   assert(ret < buf_size); // to be cautious...
   assert(close(fd) == 0);
- 
+
   int i = 0;
   int width = 0, height = 0;
 //使用 strncmp 函数检查字符串 "WIDTH" 是否位于 buf 中 i 处开始的位置，以确保文件内容的格式正确。
@@ -66,7 +102,7 @@ void NDL_OpenCanvas(int *w, int *h) {
       }
   }
   assert(buf[i++] == '\n');
- 
+
   assert(strncmp(buf + i, "HEIGHT", 6) == 0);
   i += 6;
   for (; i < buf_size; ++i) {
@@ -84,20 +120,11 @@ void NDL_OpenCanvas(int *w, int *h) {
           break;
       }
   }
- 
+
   free(buf);
- 
+
   screen_w = width;
   screen_h = height;
-if (*w == 0 && *h == 0) {
-    *w = screen_w;
-    *h = screen_h;
-  }
-  canvas_w = *w;
-  canvas_h = *h;
-  canvas_x=(screen_w - canvas_w) / 2;
-  canvas_y=(screen_h - canvas_h) / 2;
-  }
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
@@ -130,12 +157,8 @@ int NDL_Init(uint32_t flags) {
   if(flags == 3){
     evtdev = 3;
   }
-  if(flags == 4){
-    evtdev = 4;
-  }
-  if(flags == 5){
-    evtdev = 5;
-  }
+  init_dispinfo();
+  printf("屏幕:WIDTH : %d\nHEIGHT : %d\n", screen_w, screen_h);
 
   return 0;
 }
