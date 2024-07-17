@@ -55,7 +55,7 @@ void NDL_OpenCanvas(int *w, int *h) {
   }
 
    // NWM_APP logic ... 
-
+  printf("in the canvas\n");
   if (*w == 0 && *h == 0) {
     *w = screen_w;
     *h = screen_h;
