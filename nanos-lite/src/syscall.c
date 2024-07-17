@@ -2,8 +2,8 @@
 #include "syscall.h"
 #include <sys/time.h>
 
-void Sys_Write(int fd, const void *buf, size_t count){
-
+size_t Sys_Write(int fd, const void *buf, size_t count){
+  return fs_write(fd, buf, count);
 }
 
 int SYS_Read(int fd, intptr_t *buf, size_t count){
