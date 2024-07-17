@@ -98,7 +98,6 @@ static void init_dispinfo() {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-  x = 136; y = 86;
   int fd = open("/dev/fb", 0, 0);
   for (int i = 0; i < h && y + i < canvas_h; ++i) {
     lseek(fd, ((y + canvas_y + i) * screen_w + (x + canvas_x)) * 4, SEEK_SET);
@@ -129,7 +128,7 @@ int NDL_Init(uint32_t flags) {
     evtdev = 3;
   }
   init_dispinfo();
-  printf("屏幕:WIDTH : %d\nHEIGHT : %d\n", screen_w, screen_h);
+  printf("屏幕:WIDTH : %d  HEIGHT : %d\n", screen_w, screen_h);
 
   return 0;
 }
