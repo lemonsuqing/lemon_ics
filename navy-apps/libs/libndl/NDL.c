@@ -73,10 +73,12 @@ static void init_dispinfo() {
   printf("in init_dispinfio\n");
   int buf_size = 1024;
   char * buf = (char *)malloc(buf_size * sizeof(char));
+  printf("init_dispinfio: buf = %s\n", buf);
   printf("init_dispinfio: buf_size = %d\n", buf_size);
   int fd = open("/proc/dispinfo", 0, 0);
   printf("init_dispinfio: fd = %d\n", fd);
   int ret = read(fd, buf, buf_size);
+  printf("init_dispinfio: buf2 = %s\n", buf);
   assert(ret < buf_size); // to be cautious...
   assert(close(fd) == 0);
 
