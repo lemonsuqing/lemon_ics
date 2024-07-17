@@ -71,7 +71,7 @@ void NDL_OpenCanvas(int *w, int *h) {
 //解析 /proc/dispinfo 文件的内容，并写入 screen_w 和 screen_h，作为屏幕大小：
 static void init_dispinfo() {
   printf("in init_dispinfio\n");
-  int buf_size = 1024; 
+  int buf_size = 1024;
   char * buf = (char *)malloc(buf_size * sizeof(char));
   int fd = open("/proc/dispinfo", 0, 0);
   printf("init_dispinfio: fd = %d\n", fd);
