@@ -74,17 +74,17 @@ static void init_dispinfo() {
   char * buf = (char *)malloc(buf_size * sizeof(char));
   int fd = open("/proc/dispinfo", 0, 0);
   int ret = read(fd, buf, buf_size);
-  printf("bu1f = %s\n", buf);
+  printf("buf = %s\n", buf);
   // printf("init_dispinfio: buf = %s\n", buf);
-  assert(ret < buf_size); // to be cautious...
-  assert(close(fd) == 0);
+  // assert(ret < buf_size); // to be cautious...
+  // assert(close(fd) == 0);
   char buf_wh[40];
 
   char *buf_w_num = strtok(buf, ":");
   char *buf_w_date = strtok(NULL, "\n");
   char *buf_h_num = strtok(NULL, ":");
   char *buf_h_date = strtok(NULL, "\n");
-
+  printf("%s\n", buf_w_num );
   sscanf(buf_w_num, "%s", buf_wh);
   if(strcmp(buf_wh, "WIDTH") == 0){
     printf("judge\n");
