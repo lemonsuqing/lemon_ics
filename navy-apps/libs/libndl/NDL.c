@@ -100,8 +100,8 @@ static void init_dispinfo() {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-  w /= 2;
-  h /= 2;
+  x = canvas_x;
+  y = canvas_y;
   int fd = open("/dev/fb", 0, 0);
   for (int i = 0; i < h && y + i < canvas_h; ++i) {
     lseek(fd, ((y + canvas_y + i) * screen_w + (x + canvas_x)) * 4, SEEK_SET);
