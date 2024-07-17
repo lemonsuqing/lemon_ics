@@ -70,12 +70,13 @@ void NDL_OpenCanvas(int *w, int *h) {
 
 //解析 /proc/dispinfo 文件的内容，并写入 screen_w 和 screen_h，作为屏幕大小：
 static void init_dispinfo() {
-  char buf[80];
+  int buf_size = 1024;
+  char * buf = (char *)malloc(buf_size * sizeof(char));
   int fd = open("/proc/dispinfo", 0, 0);
-  int ret = read(fd, buf, 80);
+  int ret = read(fd, buf, buf_size);
   printf("buf = %s\n", buf);
   // printf("init_dispinfio: buf = %s\n", buf);
-  //assert(ret < 80); // to be cautious...
+  assert(ret < buf_size); // to be cautious...
   char buf_wh[40];
 
   char *buf_w_num = strtok(buf, ":");
@@ -94,8 +95,8 @@ static void init_dispinfo() {
     screen_h = atoi(buf_h_date);
   }
 
-  printf("init ==> 屏幕:WIDTH : %d\nHEIGHT : %d\n", screen_w, screen_h);
-
+  // printf("init ==> 屏幕:WIDTH : %d\nHEIGHT : %d\n", screen_w, screen_h);
+  free(buf);
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
