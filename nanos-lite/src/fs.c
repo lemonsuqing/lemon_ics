@@ -139,6 +139,10 @@ int fs_close(int fd){
   return 0;
 }
 
+// void print_file_talbe(void){
+//   for(int i = 0; i < NR_FILES)
+// }
+
 void init_fs() {
   // TODO: initialize the size of /dev/fb
    AM_GPU_CONFIG_T ev = io_read(AM_GPU_CONFIG);
