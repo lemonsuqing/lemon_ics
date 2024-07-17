@@ -124,7 +124,7 @@ static void init_dispinfo() {
   }
   
   free(buf);
-
+  printf("init ==> 屏幕:WIDTH : %d\nHEIGHT : %d\n", width, height);
   screen_w = width;
   screen_h = height;
 }
