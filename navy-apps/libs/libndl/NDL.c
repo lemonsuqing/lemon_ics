@@ -74,7 +74,7 @@ static void init_dispinfo() {
   char * buf = (char *)malloc(buf_size * sizeof(char));
   int fd = open("/proc/dispinfo", 0, 0);
   int ret = read(fd, buf, buf_size);
-  printf("buf = %s\n", buf);
+  printf("bu1f = %s\n", buf);
   // printf("init_dispinfio: buf = %s\n", buf);
   assert(ret < buf_size); // to be cautious...
   assert(close(fd) == 0);
