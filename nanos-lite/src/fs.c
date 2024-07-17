@@ -81,14 +81,6 @@ size_t fs_write(int fd, const void *buf, size_t len) {
         return writeFn(buf, 0, len);
     }
     
-    if (fd == 0) {
-        Log("ignore write %s", file_table[fd].name);
-        return 0;
-    }
- 
-    if (fd == 1 || fd == 2) {
-      return file_table[fd].write(buf, 0, len);
-    }
     size_t write_len = len;
     size_t open_offset = file_table[fd].open_offset;
     size_t size = file_table[fd].size;
