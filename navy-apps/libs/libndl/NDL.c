@@ -78,8 +78,8 @@ static void init_dispinfo() {
   // printf("init_dispinfio: buf = %s\n", buf);
   assert(ret < buf_size); // to be cautious...
   assert(close(fd) == 0);
-
-  int i = 0;
+  char buf_wh[40];
+  /*int i = 0;
   int width = 0, height = 0;
 //使用 strncmp 函数检查字符串 "WIDTH" 是否位于 buf 中 i 处开始的位置，以确保文件内容的格式正确。
   assert(strncmp(buf + i, "WIDTH", 5) == 0);
@@ -123,10 +123,26 @@ static void init_dispinfo() {
       }
   }
   
+  free(buf);*/
+
+
+  char *buf_w_num = strtok(buf, ":");
+  char *buf_w_date = strtok(NULL, "\n");
+  char *buf_h_num = strtok(NULL, ":");
+  char *buf_h_date = strtok(NULL, "\n");
+
+  sscanf(buf_w_num, "%s", buf_wh);
+  if(strcmp(buf_wh, "WIDTH") == 0){
+    screen_w = atoi(buf_w_date);
+  }
+
+  sscanf(buf_h_num, "%s", buf_wh);
+  if(strcmp(buf_wh, "HEIGHT") == 0){
+    screen_h = atoi(buf_h_date);
+  }
+
+  printf("init ==> 屏幕:WIDTH : %d\nHEIGHT : %d\n", screen_w, screen_h);
   free(buf);
-  printf("init ==> 屏幕:WIDTH : %d\nHEIGHT : %d\n", width, height);
-  screen_w = width;
-  screen_h = height;
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
