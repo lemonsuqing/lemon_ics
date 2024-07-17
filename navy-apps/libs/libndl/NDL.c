@@ -95,7 +95,7 @@ static void init_dispinfo() {
   }
 
   printf("init ==> 屏幕:WIDTH : %d\nHEIGHT : %d\n", screen_w, screen_h);
-  free(buf);
+
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
