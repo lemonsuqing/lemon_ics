@@ -2,10 +2,8 @@
 #include "syscall.h"
 #include <sys/time.h>
 
-void Sys_Write(intptr_t *buf, size_t count){
-  for (int i = 0; i < count; i++) {
-    putch(*((char*)buf + i));
-  }
+void Sys_Write(int fd, const void *buf, size_t count){
+
 }
 
 int SYS_Read(int fd, intptr_t *buf, size_t count){
@@ -32,7 +30,7 @@ void do_syscall(Context *c) {
     case SYS_yield:
       yield();break;
     case SYS_write:// 4
-      Sys_Write((intptr_t *)(c->GPR2),c->GPR3);
+      Sys_Write((int)(c->GPR2), (const void  *)(c->GPR3), (size_t)(c->GPR4));
       break;
     case SYS_brk:// 9
       c->GPRx=0;
