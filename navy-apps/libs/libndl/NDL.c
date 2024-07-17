@@ -72,6 +72,7 @@ void NDL_OpenCanvas(int *w, int *h) {
 static void init_dispinfo() {
   int buf_size = 1024;
   char * buf = (char *)malloc(buf_size * sizeof(char));
+  printf("buf = %s\n", buf);
   int fd = open("/proc/dispinfo", 0, 0);
   int ret = read(fd, buf, buf_size);
   // printf("init_dispinfio: buf = %s\n", buf);
@@ -121,7 +122,7 @@ static void init_dispinfo() {
           break;
       }
   }
-  printf("buf = %s\n", buf);
+  
   free(buf);
 
   screen_w = width;
