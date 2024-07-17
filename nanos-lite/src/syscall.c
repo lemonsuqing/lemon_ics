@@ -44,6 +44,9 @@ void do_syscall(Context *c) {
     case SYS_open://2
       c->GPRx = fs_open((const char *)c->GPR2, c->GPR3, c->GPR4);
       break;
+    case SYS_close:
+      c->GPRx = fs_close((int)(c->GPR1));
+      break;
     case SYS_gettimeofday:
       c->GPRx = sys_gettimeofday((struct timeval *)(c->GPR2),(struct timezone *)(c->GPR3));
       break;
