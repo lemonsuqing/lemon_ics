@@ -55,7 +55,7 @@ void NDL_OpenCanvas(int *w, int *h) {
   }
 
    // NWM_APP logic ... 
-  printf("in the canvas\n");
+  // printf("in the canvas\n");
   if (*w == 0 && *h == 0) {
     *w = screen_w;
     *h = screen_h;
@@ -121,11 +121,10 @@ int NDL_QueryAudio() {
 }
 
 int NDL_Init(uint32_t flags) {
-  printf("NDL\n");
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
-  printf("evtdev = %d\n", evtdev);
+  // printf("evtdev = %d\n", evtdev);
   if(flags == 3){
     evtdev = 3;
   }
