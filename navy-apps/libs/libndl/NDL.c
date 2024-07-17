@@ -121,7 +121,7 @@ static void init_dispinfo() {
           break;
       }
   }
-
+  printf("buf = %s\n", buf);
   free(buf);
 
   screen_w = width;
