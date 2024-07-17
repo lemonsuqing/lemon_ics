@@ -30,7 +30,7 @@ void do_syscall(Context *c) {
     case SYS_yield:
       yield();break;
     case SYS_write:// 4
-      Sys_Write((int)(c->GPR2), (const void  *)(c->GPR3), (size_t)(c->GPR4));
+      c->GPRx = Sys_Write((int)(c->GPR2), (const void  *)(c->GPR3), (size_t)(c->GPR4));
       break;
     case SYS_brk:// 9
       c->GPRx=0;
