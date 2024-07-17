@@ -75,7 +75,7 @@ static void init_dispinfo() {
   int ret = read(fd, buf, 80);
   printf("buf = %s\n", buf);
   // printf("init_dispinfio: buf = %s\n", buf);
-  assert(ret < 80); // to be cautious...
+  //assert(ret < 80); // to be cautious...
   char buf_wh[40];
 
   char *buf_w_num = strtok(buf, ":");
