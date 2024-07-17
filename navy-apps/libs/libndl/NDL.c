@@ -160,7 +160,6 @@ int NDL_Init(uint32_t flags) {
   if(flags == 3){
     evtdev = 3;
   }
-  printf("start 屏幕:WIDTH : %d   HEIGHT : %d\n", screen_w, screen_h);
   init_dispinfo();
   printf("屏幕:WIDTH : %d\nHEIGHT : %d\n", screen_w, screen_h);
 
