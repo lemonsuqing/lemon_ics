@@ -74,7 +74,6 @@ static void init_dispinfo() {
   char * buf = (char *)malloc(buf_size * sizeof(char));
   int fd = open("/proc/dispinfo", 0, 0);
   int ret = read(fd, buf, buf_size);
-  printf("buf = %s\n", buf);
   // printf("init_dispinfio: buf = %s\n", buf);
   assert(ret < buf_size); // to be cautious...
   char buf_wh[40];
@@ -86,7 +85,6 @@ static void init_dispinfo() {
   printf("%s\n", buf_w_num );
   sscanf(buf_w_num, "%s", buf_wh);
   if(strcmp(buf_wh, "WIDTH") == 0){
-    printf("judge\n");
     screen_w = atoi(buf_w_date);
   }
 
