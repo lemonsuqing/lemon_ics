@@ -31,10 +31,10 @@ void do_syscall(Context *c) {
       break;
     case SYS_yield:
       yield();break;
-    case SYS_write:
+    case SYS_write:// 4
       Sys_Write((intptr_t *)(c->GPR2),c->GPR3);
       break;
-    case SYS_brk:
+    case SYS_brk:// 9
       c->GPRx=0;
       break;
     case SYS_read:
