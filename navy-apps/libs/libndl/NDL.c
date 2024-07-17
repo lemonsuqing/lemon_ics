@@ -73,6 +73,7 @@ static void init_dispinfo() {
   printf("in init_dispinfio\n");
   int buf_size = 1024;
   char * buf = (char *)malloc(buf_size * sizeof(char));
+  printf("init_dispinfio: buf_size = %d\n", buf_size);
   int fd = open("/proc/dispinfo", 0, 0);
   printf("init_dispinfio: fd = %d\n", fd);
   int ret = read(fd, buf, buf_size);
