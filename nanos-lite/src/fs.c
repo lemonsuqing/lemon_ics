@@ -50,7 +50,7 @@ int fs_open(const char *pathname, int flags, int mode){
   for (int i = 0; i < NR_FILES; i++) {
         if (strcmp(file_table[i].name, pathname) == 0) {
             file_table[i].open_offset = 0;
-            printf("filename %s, num %d", pathname, i);
+            printf("filename %s, num %d\n", pathname, i);
             return i;
         }
     }
@@ -65,6 +65,7 @@ size_t fs_read(int fd, void *buf, size_t len){
     size_t open_offset = file_table[fd].open_offset;
     return readFn(buf, open_offset, len);
   }
+  printf("filenum %d\n", fd);
   size_t read_len = len;
   size_t open_offset = file_table[fd].open_offset;
   size_t size = file_table[fd].size;
