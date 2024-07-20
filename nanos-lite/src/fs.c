@@ -90,7 +90,7 @@ size_t fs_write(int fd, const void *buf, size_t len) {
       return file_table[fd].write(buf, 0, len);
     }/*stdin/stdout*/
 
-    if (open_offset > size) return 0;//large then offset
+    // if (open_offset > size) return 0;//large then offset
 
     if (writeFn != NULL) {
       write_len = writeFn(buf, open_offset, write_len);
