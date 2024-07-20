@@ -82,7 +82,7 @@ size_t fs_write(int fd, const void *buf, size_t len) {
     size_t disk_offset = file_table[fd].disk_offset;
     WriteFn writeFn = file_table[fd].write;
     if (writeFn != NULL) {
-        return writeFn(buf, 0, len);
+        return writeFn(buf, open_offset, len);
     }
     
     if (fd == 0) {
