@@ -84,7 +84,7 @@ size_t fs_write(int fd, const void *buf, size_t len) {
     if (writeFn != NULL) {
         return writeFn(buf, 0, len);
     }
-    
+    printf("fs_write %d\n", fd);
     if (fd == 0) {
         Log("ignore write %s", file_table[fd].name);
         return 0;
