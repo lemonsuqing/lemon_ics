@@ -102,6 +102,7 @@ static void init_dispinfo() {
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   int fd = open("/dev/fb", 0, 0);
+  printf("canvas_y %d\n", canvas_y);
   size_t offset = 0;
   for (int i = 0; i < h && y + i < canvas_h; ++i) {
     offset += ((y + canvas_y) * screen_w + (x + canvas_x)) * 4;
