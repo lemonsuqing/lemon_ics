@@ -81,18 +81,20 @@ size_t fs_write(int fd, const void *buf, size_t len) {
     size_t size = file_table[fd].size;
     size_t disk_offset = file_table[fd].disk_offset;
     WriteFn writeFn = file_table[fd].write;
+    if (writeFn != NULL) {
+        return writeFn(buf, 0, len);
+    }
+    
     if (fd == 0) {
         Log("ignore write %s", file_table[fd].name);
         return 0;
-    }/*judte fd*/
-    // if (open_offset > size) return 0;//large then offset
-
-    if (writeFn != NULL) {
-      write_len = writeFn(buf, open_offset, write_len);
-    }else{
-      if (open_offset + len > size) write_len = size - open_offset;
-      ramdisk_write(buf, disk_offset + open_offset, write_len);
     }
+    if (fd == 1 || fd == 2) {
+      return file_table[fd].write(buf, 0, len);
+    }
+    if (open_offset > size) return 0;
+    if (open_offset + len > size) write_len = size - open_offset;
+    ramdisk_write(buf, disk_offset + open_offset, write_len);
     file_table[fd].open_offset += write_len;
     return write_len;
 }
