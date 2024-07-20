@@ -85,11 +85,6 @@ size_t fs_write(int fd, const void *buf, size_t len) {
         Log("ignore write %s", file_table[fd].name);
         return 0;
     }/*judte fd*/
-
-    if (fd == 1 || fd == 2) {
-      return file_table[fd].write(buf, 0, len);
-    }/*stdin/stdout*/
-
     // if (open_offset > size) return 0;//large then offset
 
     if (writeFn != NULL) {
