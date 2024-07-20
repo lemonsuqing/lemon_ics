@@ -143,7 +143,8 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
   printf("fs==> offset: %d\n", offset);
   switch (whence) {
     case SEEK_SET:
-      assert(offset <= file_table[fd].size);
+      if(offset <= file_table[fd].size)
+        return -1;
       file_table[fd].open_offset = offset;
       break;
     case SEEK_CUR:
