@@ -97,6 +97,7 @@ static void init_dispinfo() {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
+    printf("NDL_DrawRect: bmp=%p\n",pixels);
   int fd = open("/dev/fb", 0, 0);
   long offset = 0;
   for (int i = 0; i < h && y + i < canvas_h; ++i) {
