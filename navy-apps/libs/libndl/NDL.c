@@ -99,13 +99,12 @@ static void init_dispinfo() {
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   int fd = open("/dev/fb", 0, 0);
-  x += (screen_w - canvas_w) / 2;
-  y += (screen_h - canvas_h) / 2;
-  printf("x:%d  y:%d\n",x,y);
-  for (int i = 0; i < h; i++) {
-    long offset = (y + i)* screen_w + x;
+  long offset = 0;
+  for (int i = 0; i < h && y + i < canvas_h; ++i) {
+    offset = ((y + canvas_y + i) * screen_w + (x + canvas_x)) * 4;
     lseek(fd, offset, SEEK_SET);
-    write(fd, pixels + (i * w), w);
+    write(fd, pixels + i * w, 4 * (w < canvas_w - x ? w : canvas_w - x));
+    printf("offset: %ld\tn: %d\n", offset, 4 * (w < canvas_w - x ? w : canvas_w - x));
   }
 }
 
