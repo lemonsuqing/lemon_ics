@@ -93,7 +93,6 @@ static void init_dispinfo() {
     screen_h = atoi(buf_h_date);
   }
 
-  // printf("init ==> 屏幕:WIDTH : %d\nHEIGHT : %d\n", screen_w, screen_h);
   free(buf);
 }
 
