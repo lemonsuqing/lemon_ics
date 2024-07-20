@@ -107,7 +107,7 @@ size_t fs_lseek(int fd, size_t offset, int whence){
         Log("ignore lseek %s", file_table[fd].name);
         return 0;
   }
-  printf("fs==> offset: %d\n",offset);
+  printf("fs==> offset: %d \t file_table[fd].size: %d\n",offset,file_table[fd].size);
 
   Finfo *file = &file_table[fd];
   size_t new_offset;
