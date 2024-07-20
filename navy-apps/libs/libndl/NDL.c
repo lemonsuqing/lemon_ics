@@ -101,13 +101,17 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   int fd = open("/dev/fb", 0, 0);
   long offset = 0;
   for (int i = 0; i < h && y + i < canvas_h; ++i) {
-    offset = ((y + canvas_y + i) * screen_w + (x + canvas_x)) * 4;
-    printf("offset: %ld\tn: %d\n", offset, 4 * (w < canvas_w - x ? w : canvas_w - x));
-    lseek(fd, offset, SEEK_SET);
-    write(fd, pixels + i * w, 4 * (w < canvas_w - x ? w : canvas_w - x));
-    
+    if (y + canvas_y + i < screen_h && x + canvas_x < screen_w) {
+      offset = ((y + canvas_y + i) * screen_w + (x + canvas_x)) * 4;
+      lseek(fd, offset, SEEK_SET);
+      int len = 4 * (w < canvas_w - x ? w : canvas_w - x);
+      if (offset + len <= screen_w * screen_h * 4) {
+        write(fd, pixels + i * w, len);
+      }
+    }
   }
 }
+
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
 }
