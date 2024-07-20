@@ -99,7 +99,7 @@ size_t fs_write(int fd, const void *buf, size_t len) {
     file_table[fd].open_offset += write_len;
     return write_len;
 }
-
+int num_fs = 0;
 size_t fs_lseek(int fd, size_t offset, int whence){
   if (fd <= 2) {
         Log("ignore lseek %s", file_table[fd].name);
@@ -126,7 +126,8 @@ size_t fs_lseek(int fd, size_t offset, int whence){
     }
      // 检查新的指针位置是否在文件范围内
     if (new_offset < 0 || new_offset > file->size) {
-        Log("Seek position out of bounds");
+        num_fs++;
+        Log("%d:Seek position out of bounds", num_fs);
         return -1;
     }
      // 设置新的文件读写指针
