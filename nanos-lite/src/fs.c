@@ -106,12 +106,9 @@ size_t fs_lseek(int fd, size_t offset, int whence){
         Log("ignore lseek %s", file_table[fd].name);
         return 0;
   }
-  // printf("|%d|\n",3);
   printf("fs==> offset: %d \t file_table[%d].size: %d\n",offset, fd, file_table[fd].size);
-
   Finfo *file = &file_table[fd];
   size_t new_offset;
-  // 根据 whence 参数来计算新的指针位置
   /*
     对于 SEEK_SET，new_offset 直接设置为 offset。
     对于 SEEK_CUR，new_offset 设置为当前打开位置 file->open_offset 加上 offset。
