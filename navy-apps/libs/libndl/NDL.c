@@ -101,7 +101,7 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   int fd = open("/dev/fb", 0, 0);
   long offset = 0;
   for (int i = 0; i < h && y + i < canvas_h; ++i) {
-    offset = ((y + canvas_y + i) * canvas_w + (x + canvas_x)) * 4;
+    offset = (((y + canvas_y)/2 + i) * screen_w + (x + canvas_x)/2) * 4;
     printf("offset: %ld\tn: %d\n", offset, 4 * (w < canvas_w - x ? w : canvas_w - x));
     lseek(fd, offset, SEEK_SET);
     write(fd, pixels + i * w, 4 * (w < canvas_w - x ? w : canvas_w - x));
