@@ -104,7 +104,6 @@ size_t fs_lseek(int fd, size_t offset, int whence){
         return 0;
   }
   // printf("fs==> offset: %d \t file_table[%d].size: %d\n",offset, fd, file_table[fd].size);
-  Finfo *file = &file_table[fd];
   size_t new_offset;
   /*
     对于 SEEK_SET，new_offset 直接设置为 offset。
@@ -114,21 +113,22 @@ size_t fs_lseek(int fd, size_t offset, int whence){
     if (whence == SEEK_SET) {
         new_offset = offset;
     } else if (whence == SEEK_CUR) {
-        new_offset = file->open_offset + offset;
+        new_offset = file_table[fd].open_offset + offset;
     } else if (whence == SEEK_END) {
-        new_offset = file->size + offset;
+        new_offset =  file_table[fd].size + offset;
     } else {
         Log("Invalid whence value: %d", whence);
         return -1;
     }
+     file_table[fd].open_offset = new_offset;
      // 检查新的指针位置是否在文件范围内
-   if (new_offset < 0 || new_offset > file->size) {
+   if (new_offset < 0 || new_offset > file_table[fd].size) {
         num_fs++;
         Log("%d:Seek position out of bounds", num_fs);
         return -1;
     } 
      // 设置新的文件读写指针
-    file->open_offset = new_offset;
+   
     
     return new_offset;
 }
