@@ -121,13 +121,14 @@ size_t fs_lseek(int fd, size_t offset, int whence){
         return -1;
     }
      // 检查新的指针位置是否在文件范围内
+     file_table[fd].open_offset = new_offset;
    if (new_offset < 0 || new_offset > file_table[fd].size) {
         num_fs++;
         Log("%d:Seek position out of bounds", num_fs);
         Log("%d:Seek position out of bounds", new_offset);
         return -1;
     } 
-    file_table[fd].open_offset = new_offset;
+    
      // 设置新的文件读写指针
    
     
