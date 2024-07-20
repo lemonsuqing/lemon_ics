@@ -121,6 +121,7 @@ size_t fs_lseek(int fd, size_t offset, int whence){
         Log("Invalid whence value: %d", whence);
         return -1;
     }
+    file->open_offset = new_offset;
      // 检查新的指针位置是否在文件范围内
    if (new_offset < 0 || new_offset > file->size) {
         num_fs++;
@@ -128,7 +129,7 @@ size_t fs_lseek(int fd, size_t offset, int whence){
         return -1;
     } 
      // 设置新的文件读写指针
-    file->open_offset = new_offset;
+    
     
     return new_offset;
 }
