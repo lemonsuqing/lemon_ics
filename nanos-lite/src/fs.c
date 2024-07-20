@@ -40,7 +40,7 @@ static Finfo file_table[] __attribute__((used)) = {
   [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
   [FD_EVENT]  = {"/dev/events", 0, 0, events_read ,invalid_write},
   [FD_DISPINFO]  = {"/proc/dispinfo", 0, 0, dispinfo_read, invalid_write},
-  [FD_FB]  = {"/dev/fb", 0, 0, invalid_read, fb_write},
+  [FD_FB]  = {"/dev/fb", 0, 0, invalid_read, serial_write},
 #include "files.h"
 };
 
@@ -81,7 +81,6 @@ size_t fs_write(int fd, const void *buf, size_t len) {
     size_t size = file_table[fd].size;
     size_t disk_offset = file_table[fd].disk_offset;
     WriteFn writeFn = file_table[fd].write;
-    printf("fs_write %d\n", fd);
     
     if (fd == 0) {
         Log("ignore write %s", file_table[fd].name);
