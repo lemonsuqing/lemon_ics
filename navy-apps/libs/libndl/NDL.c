@@ -36,7 +36,7 @@ static int canvas_x=0,canvas_y=0;
 // 如果*w和*h均为0, 则将系统全屏幕作为画布, 并将*w和*h分别设为系统屏幕的大小
 // 目前NDL_OpenCanvas()只需要记录画布的大小就可以了, 当然我们要求画布大小不能超过屏幕大小
 void NDL_OpenCanvas(int *w, int *h) {
-
+  if (getenv("NWM_APP")) {
     int fbctl = 4;
     fbdev = 5;
     screen_w = *w; screen_h = *h;
@@ -52,7 +52,7 @@ void NDL_OpenCanvas(int *w, int *h) {
       if (strcmp(buf, "mmap ok") == 0) break;
     }
     close(fbctl);
-  
+  }
 
    // NWM_APP logic ... 
   // printf("in the canvas\n");
