@@ -36,26 +36,6 @@ static int canvas_x=0,canvas_y=0;
 // 如果*w和*h均为0, 则将系统全屏幕作为画布, 并将*w和*h分别设为系统屏幕的大小
 // 目前NDL_OpenCanvas()只需要记录画布的大小就可以了, 当然我们要求画布大小不能超过屏幕大小
 void NDL_OpenCanvas(int *w, int *h) {
-  // if (getenv("NWM_APP")) {
-  //   int fbctl = 4;
-  //   fbdev = 5;
-  //   screen_w = *w; screen_h = *h;
-  //   char buf[64];
-  //   int len = sprintf(buf, "%d %d", screen_w, screen_h);
-  //   // let NWM resize the window and create the frame buffer
-  //   write(fbctl, buf, len);
-  //   while (1) {
-  //     // 3 = evtdev
-  //     int nread = read(3, buf, sizeof(buf) - 1);
-  //     if (nread <= 0) continue;
-  //     buf[nread] = '\0';
-  //     if (strcmp(buf, "mmap ok") == 0) break;
-  //   }
-  //   close(fbctl);
-  // }
-
-   // NWM_APP logic ... 
-  // printf("in the canvas\n");
   if (*w == 0 && *h == 0) {
     canvas_w = screen_w;
     canvas_h = screen_h;
@@ -102,6 +82,7 @@ static void init_dispinfo() {
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   int fd = open("/dev/fb", 0, 0);
+  printf("DNL==>fd:%d\n",fd);
   // printf("canvas_y %d\n", canvas_y);
   size_t offset = ( canvas_y * screen_w + canvas_x ) * 4;
   int ret_seek, ret_write;
@@ -112,6 +93,7 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
     offset += screen_w * 4;
     // printf("offset: %d, offset_ole: %d\n", offset, ((y + canvas_y + i) * screen_w + (x + canvas_x)) * 4);
   }
+  close(fd);
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
