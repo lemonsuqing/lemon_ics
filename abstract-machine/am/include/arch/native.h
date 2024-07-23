@@ -13,6 +13,7 @@ struct Context {
   ucontext_t uc;
   // skip the red zone of the stack frame, see the amd64 ABI manual for details
   uint8_t redzone[128];
+  uintptr_t mepc;
 };
 
 #define GPR1 uc.uc_mcontext.gregs[REG_RDI]
