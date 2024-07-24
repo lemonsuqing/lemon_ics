@@ -43,14 +43,8 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
-  //printf("offset : %d, len : %d\n", offset, len);
+  printf("offset : %d, len : %d\n", offset, len);
   AM_GPU_CONFIG_T fb_ctl = io_read(AM_GPU_CONFIG);
-  // fb_ctl.pixels = (uint32_t *)buf;
-  // fb_ctl.x = offset % 400;
-  // fb_ctl.y = offset / 400;
-  // fb_ctl.w = len, fb_ctl.h = 1;
-  // fb_ctl.sync = true;
- // printf("x : %d, y : %d, w : %d, h: %d\n",fb_ctl.x, fb_ctl.y, fb_ctl.w, fb_ctl.h);
   offset /= 4;
   len /= 4;
   int w = fb_ctl.width;

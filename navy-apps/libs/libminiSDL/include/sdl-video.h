@@ -32,20 +32,20 @@ typedef struct {
 } SDL_Palette;
 
 typedef struct {
-	SDL_Palette *palette;
-	uint8_t BitsPerPixel;
-	uint8_t BytesPerPixel;
-	uint8_t Rloss, Gloss, Bloss, Aloss;
-	uint8_t Rshift, Gshift, Bshift, Ashift;
-	uint32_t Rmask, Gmask, Bmask, Amask;
+	SDL_Palette *palette;	// 指向调色板的指针，用于索引颜色模式。
+	uint8_t BitsPerPixel;	// 每个像素使用的位数。
+	uint8_t BytesPerPixel;	// 每个像素使用的字节数。
+	uint8_t Rloss, Gloss, Bloss, Aloss;	//红 色、绿色、蓝色和alpha通道的位损失。
+	uint8_t Rshift, Gshift, Bshift, Ashift;	// 红色、绿色、蓝色和alpha通道的位偏移。
+	uint32_t Rmask, Gmask, Bmask, Amask;	// 红色、绿色、蓝色和alpha通道的位掩码。
 } SDL_PixelFormat;
 
 typedef struct {
-	uint32_t flags;
-	SDL_PixelFormat *format;
+	uint32_t flags;	// 表面的属性标志。
+	SDL_PixelFormat *format;	// 指向像素格式的指针。
 	int w, h;
-	uint16_t pitch;
-	uint8_t *pixels;
+	uint16_t pitch;	// 表面的扫描线宽度，以字节为单位。
+	uint8_t *pixels;	// 指向像素数据的指针。
 } SDL_Surface;
 
 SDL_Surface* SDL_CreateRGBSurfaceFrom(void *pixels, int width, int height, int depth,

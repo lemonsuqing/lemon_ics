@@ -29,7 +29,7 @@ int NDL_PollEvent(char *buf, int len) {
 
 //画布大小
 static int canvas_w=0,canvas_h=0;
-//相对于屏幕左上角的画布位置坐标
+// 相对于屏幕左上角的画布位置坐标
 static int canvas_x=0,canvas_y=0;
 
 // 打开一张(*w) X (*h)的画布
