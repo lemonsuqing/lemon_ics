@@ -22,6 +22,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   for (int i = 0; i < h; i++) {
     memcpy(pixel + w * i, src + (y + i) * s->w + x, w * 4);
   }
+  printf("pixel:%d, x:%d, y:%d, w:%d, h:%d\n",pixel, x, y, w, h);
   NDL_DrawRect(pixel, x, y, w, h);
   free(pixel);
 }

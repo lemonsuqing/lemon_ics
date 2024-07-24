@@ -81,6 +81,7 @@ static void init_dispinfo() {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
+  printf("pixels:%d, x:%d, y:%d, w:%d, h:%d\n",pixels, x, y, w, h);
   int fd = open("/dev/fb", 0, 0);
   printf("DNL==>fd:%d\n",fd);
   // printf("canvas_y %d\n", canvas_y);

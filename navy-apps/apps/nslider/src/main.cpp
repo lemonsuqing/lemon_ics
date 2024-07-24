@@ -49,17 +49,17 @@ void render() {
   slide = SDL_LoadBMP(fname);
   // printf("flags:%d  w:%d  h:%d  pithc:%d\n", slide->flags,slide->w, slide->h, slide->pitch);
   printf("flags: %d\n", slide->flags);
-printf("w: %d\n", slide->w);
-printf("h: %d\n", slide->h);
-printf("pitch: %d\n", slide->pitch);
+  printf("w: %d\n", slide->w);
+  printf("h: %d\n", slide->h);
+  printf("pitch: %d\n", slide->pitch);
 
-if (slide->pixels) {
-    printf("pixels: %p\n", slide->pixels);
-} else {
-    printf("pixels: NULL\n");
-}
+  if (slide->pixels) {
+      printf("pixels: %p\n", slide->pixels);
+  } else {
+      printf("pixels: NULL\n");
+  }
 
-if (slide->format) {
+  if (slide->format) {
     printf("BitsPerPixel: %d\n", slide->format->BitsPerPixel);
     printf("BytesPerPixel: %d\n", slide->format->BytesPerPixel);
     printf("Rloss: %d\n", slide->format->Rloss);
