@@ -57,7 +57,7 @@ static void init_dispinfo() {
   char * buf = (char *)malloc(buf_size * sizeof(char));
   int fd = open("/proc/dispinfo", 0, 0);
   int ret = read(fd, buf, buf_size);
-  printf("init_dispinfio: buf = %s, fd = %d\n", buf, fd);
+  // printf("init_dispinfio: buf = %s, fd = %d\n", buf, fd);
   assert(ret < buf_size); // to be cautious...
   char buf_wh[40];
 
@@ -115,7 +115,7 @@ int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
-  printf("evtdev = %d\n", evtdev);
+  // printf("evtdev = %d\n", evtdev);
   if(flags == 3){
     evtdev = 3;
   }
