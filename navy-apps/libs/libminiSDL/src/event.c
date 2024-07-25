@@ -14,7 +14,7 @@ int SDL_PushEvent(SDL_Event *ev) {
 }
 
 int SDL_PollEvent(SDL_Event *ev) {
-  printf("in SDL_PollEvent\n");
+  // printf("in SDL_PollEvent\n");
   char buf[128];
   if (NDL_PollEvent(buf, 128) == 1)
   {
