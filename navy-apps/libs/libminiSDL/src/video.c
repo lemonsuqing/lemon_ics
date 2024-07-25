@@ -28,52 +28,6 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   free(pixel);
 }
 
-// void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-//   if (s == NULL || s->pixels == NULL) {
-//         // Handle null pointer
-//         return;
-//     }
-
-//     if (w == 0 || h == 0) {
-//         w = s->w;
-//         h = s->h;
-//     }
-
-//     uint32_t len = (uint32_t)w * (uint32_t)h;
-//     uint32_t *buf = (uint32_t *)malloc(len * sizeof(uint32_t));
-
-//     if (buf == NULL) {
-//         // Handle memory allocation failure
-//         return;
-//     }
-    
-//     uint8_t *pixels = (uint8_t *)s->pixels;
-//     uint8_t bytes_per_pixel = s->format->BytesPerPixel;
-//     uint32_t pitch = s->pitch;
-
-//     for (int row = 0; row < h; ++row) {
-//         for (int col = 0; col < w; ++col) {
-//             int index = row * w + col;  // index in the buffer
-//             int pixel_pos = (y + row) * (pitch / bytes_per_pixel) + (x + col);  // pixel position in the surface
-
-//             if (s->format->BitsPerPixel == 32) {
-//                 uint32_t *pixels_32 = (uint32_t *)pixels;
-//                 buf[index] = pixels_32[pixel_pos];
-//             }
-//             else if (s->format->BitsPerPixel == 8) {
-//                 uint8_t index_in_palette = pixels[pixel_pos];
-//                 SDL_Color rgba_color = s->format->palette->colors[index_in_palette];
-//                 buf[index] = (rgba_color.a << 24) | (rgba_color.r << 16) | (rgba_color.g << 8) | (rgba_color.b); 
-//             }
-//             else {
-//                 // Unsupported pixel format
-//                 free(buf);
-//                 printf("SDL_UpdateRect: Unsupported pixel format with %d bits per pixel\n", s->format->BitsPerPixel);
-//                 return;
-//             }
-//         }
-//     }
-
 //     NDL_DrawRect(buf, x, y, w, h);
 
 //     free(buf);
