@@ -7,6 +7,7 @@ size_t Sys_Write(int fd, const void *buf, size_t count){
 }
 
 int SYS_Read(int fd, intptr_t *buf, size_t count){
+  printf("in SYS_Read\n");
   int r_len = fs_read(fd, buf, count);
   return r_len;
 }
