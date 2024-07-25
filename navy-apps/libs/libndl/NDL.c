@@ -48,7 +48,6 @@ void NDL_OpenCanvas(int *w, int *h) {
   }
   canvas_x = (screen_w - canvas_w) / 2;
   canvas_y = (screen_h - canvas_h) / 2;
-  printf("画布的大小为宽%d X 高%d\n",canvas_w,canvas_h);
   printf("相对于屏幕左上角的画布位置坐标x:%d,y:%d\n",canvas_x,canvas_y);
 }
 
@@ -58,7 +57,7 @@ static void init_dispinfo() {
   char * buf = (char *)malloc(buf_size * sizeof(char));
   int fd = open("/proc/dispinfo", 0, 0);
   int ret = read(fd, buf, buf_size);
-  // printf("init_dispinfio: buf = %s\n", buf);
+  printf("init_dispinfio: buf = %s, fd = %d\n", buf, fd);
   assert(ret < buf_size); // to be cautious...
   char buf_wh[40];
 
@@ -83,6 +82,7 @@ static void init_dispinfo() {
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   printf("pixels:%d, x:%d, y:%d, w:%d, h:%d\n",pixels, x, y, w, h);
   int fd = open("/dev/fb", 0, 0);
+  printf("open\n");
   printf("DNL==>fd:%d\n",fd);
   // printf("canvas_y %d\n", canvas_y);
   size_t offset = ( canvas_y * screen_w + canvas_x ) * 4;
@@ -115,7 +115,7 @@ int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
-  // printf("evtdev = %d\n", evtdev);
+  printf("evtdev = %d\n", evtdev);
   if(flags == 3){
     evtdev = 3;
   }
