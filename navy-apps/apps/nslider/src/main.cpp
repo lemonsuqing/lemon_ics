@@ -108,9 +108,9 @@ int main() {
   SDL_Surface *screen = SDL_SetVideoMode(W, H, 32, SDL_HWSURFACE);
 
   int rep = 0, g = 0;
-  printf("render start\n");
+  // printf("render start\n");
   render();
-  printf("render end_\n");
+  // printf("render end_\n");
 
   while (1) {
     SDL_Event e;
