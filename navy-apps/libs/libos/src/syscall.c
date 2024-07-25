@@ -85,7 +85,6 @@ void *_sbrk(intptr_t increment) {
 }
 
 int _read(int fd, void *buf, size_t count) {
-  printf("in _read\n");
   int ret = _syscall_(SYS_read, fd, (intptr_t)buf, count);
   return ret;
 }
