@@ -76,8 +76,9 @@ int main() {
 
   while (1) {
     SDL_Event e;
-    SDL_WaitEvent(&e);
-    printf("e.key.keysym.sym: %d\n", e.key.keysym.sym);
+    // SDL_WaitEvent(&e);
+    e.key.keysym.sym = 49;
+    // printf("e.key.keysym.sym: %d\n", e.key.keysym.sym);
     if (e.type == SDL_KEYDOWN) {
       switch(e.key.keysym.sym) {
         case SDLK_0: rep = rep * 10 + 0; break;
