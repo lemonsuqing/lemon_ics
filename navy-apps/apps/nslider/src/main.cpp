@@ -92,9 +92,9 @@ int main() {
         case SDLK_8: rep = rep * 10 + 8; break;
         case SDLK_9: rep = rep * 10 + 9; break;
         case SDLK_J:
-        case SDLK_DOWN: next(rep); rep = 0; g = 0; break;
+        case SDLK_DOWN: next(rep); rep = 0; g = 0; printf("next\n");break;
         case SDLK_K:
-        case SDLK_UP: prev(rep); rep = 0; g = 0; break;
+        case SDLK_UP: prev(rep); rep = 0; g = 0; printf("prev\n"); break;
         case SDLK_G:
           g ++;
           if (g > 1) {
