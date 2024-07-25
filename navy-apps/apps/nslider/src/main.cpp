@@ -47,44 +47,6 @@ void render() {
   sprintf(fname, path, cur);
   printf("fname:%s\n",fname);
   slide = SDL_LoadBMP(fname);
-  // printf("flags:%d  w:%d  h:%d  pithc:%d\n", slide->flags,slide->w, slide->h, slide->pitch);
-//   printf("flags: %d\n", slide->flags);
-//   printf("w: %d\n", slide->w);
-//   printf("h: %d\n", slide->h);
-//   printf("pitch: %d\n", slide->pitch);
-
-//   if (slide->pixels) {
-//       printf("pixels: %p\n", slide->pixels);
-//   } else {
-//       printf("pixels: NULL\n");
-//   }
-
-//   if (slide->format) {
-//     printf("BitsPerPixel: %d\n", slide->format->BitsPerPixel);
-//     printf("BytesPerPixel: %d\n", slide->format->BytesPerPixel);
-//     printf("Rloss: %d\n", slide->format->Rloss);
-//     printf("Gloss: %d\n", slide->format->Gloss);
-//     printf("Bloss: %d\n", slide->format->Bloss);
-//     printf("Aloss: %d\n", slide->format->Aloss);
-//     printf("Rshift: %d\n", slide->format->Rshift);
-//     printf("Gshift: %d\n", slide->format->Gshift);
-//     printf("Bshift: %d\n", slide->format->Bshift);
-//     printf("Ashift: %d\n", slide->format->Ashift);
-//     printf("Rmask: %u\n", slide->format->Rmask);
-//     printf("Gmask: %u\n", slide->format->Gmask);
-//     printf("Bmask: %u\n", slide->format->Bmask);
-//     printf("Amask: %u\n", slide->format->Amask);
-
-//     if (slide->format->palette) {
-//         printf("palette: %p\n", slide->format->palette);
-//     } else {
-//         printf("palette: NULL\n");
-//     }
-// } else {
-//     printf("format: NULL\n");
-// }
-// print_pixels(slide);
-
   assert(slide);
   SDL_UpdateRect(slide, 0, 0, 0, 0);
 }
