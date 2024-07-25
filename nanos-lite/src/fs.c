@@ -62,6 +62,7 @@ size_t fs_read(int fd, void *buf, size_t len){
   ReadFn readFn = file_table[fd].read;
   if (readFn != NULL) {
     // 特殊文件处理
+    printf("fs_read:buf=%s\n",buf);
     size_t open_offset = file_table[fd].open_offset;
     return readFn(buf, open_offset, len);
   }
