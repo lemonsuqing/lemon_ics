@@ -18,7 +18,7 @@ int SDL_PollEvent(SDL_Event *ev)
   char buf[128];
   if (NDL_PollEvent(buf, 128) == 1)
   {
-    //printf("SDL_PollEvent: %s", buf);
+    printf("SDL_PollEvent: %s", buf);
     if (strncmp(buf, "kd", 2) == 0)
     {
       ev->key.type = SDL_KEYDOWN;
@@ -32,7 +32,7 @@ int SDL_PollEvent(SDL_Event *ev)
     {
       if (strncmp(buf + 3, keyname[i], strlen(buf) - 4) == 0 && buf[3 + strlen(keyname[i])] == '\n')
       {
-        //printf("keyname[%d]: %s\n", i, keyname[i]);
+        printf("keyname[%d]: %s\n", i, keyname[i]);
         ev->key.keysym.sym = i;
         break;
       }
