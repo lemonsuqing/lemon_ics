@@ -29,6 +29,7 @@ int SDL_PollEvent(SDL_Event *ev) {
           if (strncmp(buf + 3, keyname[i], strlen(buf) - 4) == 0
                   && strlen(keyname[i]) == strlen(buf) - 4) {
               flag = 1;
+              printf("ev->key.keysym.sym: %d\n", ev->key.keysym.sym);
               ev->key.keysym.sym = i;
               break;
           }
