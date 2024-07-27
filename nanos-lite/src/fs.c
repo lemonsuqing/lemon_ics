@@ -58,13 +58,15 @@ int fs_open(const char *pathname, int flags, int mode){
 
 
 size_t fs_read(int fd, void *buf, size_t len){
-  printf("fs_read:buf=%s\n",buf);
+  // printf("fs_read:buf=%s\n",buf);
   ReadFn readFn = file_table[fd].read;
   if (readFn != NULL) {
     // 特殊文件处理
     // printf("fs_read:file_table[i].name=%s\n",file_table[fd].name);
     size_t open_offset = file_table[fd].open_offset;
-    return readFn(buf, open_offset, len);
+    size_t fs_ret = readFn(buf, open_offset, len);
+    printf("fs_read:buf=%s\tfs_ret=%d\n",buf, fs_ret);
+    return fs_ret;
   }
   size_t read_len = len;
   size_t open_offset = file_table[fd].open_offset;
