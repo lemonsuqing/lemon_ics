@@ -18,21 +18,21 @@ int SDL_PollEvent(SDL_Event *ev) {
   unsigned buf_size = 32;
   char *buf = (char *)malloc(buf_size * sizeof(char));
   int ndl_flag = NDL_PollEvent(buf, buf_size);
-  printf("NDL_PollEvent(buf, buf_size) = %d\n", ndl_flag);
+  // printf("NDL_PollEvent(buf, buf_size) = %d\n", ndl_flag);
   if (ndl_flag == 5) {
       if (strncmp(buf, "kd", 2) == 0) {
           ev->key.type = SDL_KEYDOWN;
       } else {
           ev->key.type = SDL_KEYUP;
       }
-      printf("ev->key.type: %d\n", ev->key.type);
+      // printf("ev->key.type: %d\n", ev->key.type);
       int flag = 0;
       for (unsigned i = 0; i < sizeof(keyname) / sizeof(keyname[0]); ++i) {
         // printf("i = %d\n",i);
           if (strncmp(buf + 3, keyname[i], strlen(buf) - 4) == 0
                   && strlen(keyname[i]) == strlen(buf) - 4) {
               flag = 1;
-              printf("ev->key.keysym.sym: %d\n", i);
+              // printf("ev->key.keysym.sym: %d\n", i);
               ev->key.keysym.sym = i;
               break;
           }
