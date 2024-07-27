@@ -53,7 +53,7 @@ void builtin_sh_run() {
     SDL_Event ev;
     if (SDL_PollEvent(&ev)) {
       if (ev.type == SDL_KEYUP || ev.type == SDL_KEYDOWN) {
-        // printf("ev.type=%d", ev.type);
+        printf("ev.type=%d", ev.type);
         const char *res = term->keypress(handle_key(&ev));
         if (res) {
           sh_handle_cmd(res);
