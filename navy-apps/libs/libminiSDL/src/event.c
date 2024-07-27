@@ -28,16 +28,7 @@ int SDL_PollEvent(SDL_Event *ev) {
     // printf("ev->key.type: %d\n", ev->key.type);
     int flag = 0;
     for (unsigned i = 0; i < sizeof(keyname) / sizeof(keyname[0]); ++i) {
-      // printf("i = %d\n",i);
-      printf("buf = %s\n",buf);
-      if (strncmp(buf + 3, "SPACE", strlen(buf) - 4) == 0) {
-        ev->key.keysym.sym = SDLK_SPACE;  // Use SDLK_SPACE for SDL space key
-        flag = 1;
-      } else if (strncmp(buf + 3, "ENTER", strlen(buf) - 4) == 0) {
-        ev->key.keysym.sym = SDLK_RETURN;  // Use SDLK_RETURN for SDL enter key
-        flag = 1;
-      }
-
+      printf("i = %d\n",i);
       if (strncmp(buf + 3, keyname[i], strlen(buf) - 4) == 0
             && strlen(keyname[i]) == strlen(buf) - 4) {
         flag = 1;
@@ -49,7 +40,14 @@ int SDL_PollEvent(SDL_Event *ev) {
 
     // Handle special cases for keys like space
     // if (!flag) {
-      
+    //   printf("buf = %s\n",buf);
+    //   if (strncmp(buf + 3, "SPACE", strlen(buf) - 4) == 0) {
+    //     ev->key.keysym.sym = SDLK_SPACE;  // Use SDLK_SPACE for SDL space key
+    //     flag = 1;
+    //   } else if (strncmp(buf + 3, "ENTER", strlen(buf) - 4) == 0) {
+    //     ev->key.keysym.sym = SDLK_RETURN;  // Use SDLK_RETURN for SDL enter key
+    //     flag = 1;
+    //   }
     // }
     
     free(buf);
@@ -64,7 +62,7 @@ int SDL_WaitEvent(SDL_Event *ev) {
     char *buf = (char *)malloc(buf_size * sizeof(char));
 
     while (NDL_PollEvent(buf, buf_size) == 0); // wait ...
-    printf("SDL_WaitEvent: buf = %s\n",buf);
+    // printf("SDL_WaitEvent: buf = %s\n",buf);
     if (strncmp(buf, "kd", 2) == 0)
         ev->key.type = SDL_KEYDOWN;
     else
