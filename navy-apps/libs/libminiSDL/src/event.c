@@ -18,7 +18,7 @@ int SDL_PollEvent(SDL_Event *ev) {
   unsigned buf_size = 32;
   char *buf = (char *)malloc(buf_size * sizeof(char));
   int ndl_flag = NDL_PollEvent(buf, buf_size);
-  // printf("NDL_PollEvent(buf, buf_size) = %d\n", ndl_flag);
+  printf("NDL_PollEvent(buf, buf_size) = %d\n", ndl_flag);
   if (ndl_flag == 5 || ndl_flag == 9 || ndl_flag == 10 || ndl_flag == 13) {
     if (strncmp(buf, "kd", 2) == 0) {
         ev->key.type = SDL_KEYDOWN;
