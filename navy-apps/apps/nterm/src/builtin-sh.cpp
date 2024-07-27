@@ -43,7 +43,6 @@ static void sh_handle_cmd(const char *cmd) {
     printf("%s\n", fname);
     execvp(fname, NULL);
   }
-
 }
 
 void builtin_sh_run() {
