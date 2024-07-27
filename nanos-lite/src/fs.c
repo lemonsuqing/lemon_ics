@@ -65,7 +65,7 @@ size_t fs_read(int fd, void *buf, size_t len){
     // printf("fs_read:file_table[i].name=%s\n",file_table[fd].name);
     size_t open_offset = file_table[fd].open_offset;
     size_t fs_ret = readFn(buf, open_offset, len);
-    printf("fs_read:buf=%s\tfs_ret=%d\n",buf, fs_ret);
+    // printf("fs_read:buf=%s\tfs_ret=%d\n",buf, fs_ret);
     return fs_ret;
   }
   size_t read_len = len;
