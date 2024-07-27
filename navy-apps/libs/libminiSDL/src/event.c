@@ -40,6 +40,7 @@ int SDL_PollEvent(SDL_Event *ev) {
 
     // Handle special cases for keys like space
     if (!flag) {
+      printf("buf = %s\n",buf);
       if (strncmp(buf + 3, "SPACE", strlen(buf) - 4) == 0) {
         ev->key.keysym.sym = SDLK_SPACE;  // Use SDLK_SPACE for SDL space key
         flag = 1;
