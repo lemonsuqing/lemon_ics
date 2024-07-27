@@ -38,18 +38,6 @@ int SDL_PollEvent(SDL_Event *ev) {
         break;
       }
     }
-
-    // Handle special cases for keys like space
-    // if (!flag) {
-    //   printf("buf = %s\n",buf);
-    //   if (strncmp(buf + 3, "SPACE", strlen(buf) - 4) == 0) {
-    //     ev->key.keysym.sym = SDLK_SPACE;  // Use SDLK_SPACE for SDL space key
-    //     flag = 1;
-    //   } else if (strncmp(buf + 3, "ENTER", strlen(buf) - 4) == 0) {
-    //     ev->key.keysym.sym = SDLK_RETURN;  // Use SDLK_RETURN for SDL enter key
-    //     flag = 1;
-    //   }
-    // }
     
     free(buf);
     return 1;
