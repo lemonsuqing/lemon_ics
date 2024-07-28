@@ -19,14 +19,6 @@ static void sh_printf(const char *format, ...) {
 
 static void sh_banner() {
   sh_printf("Built-in Shell in NTerm (NJU Terminal) - lemonsuqing\n\n");
-
-sh_printf("   _                                            _             \n");
-sh_printf("  | | ___ _ __ ___   ___  _ __  ___ _   _  __ _(_)_ __   __ _ \n");
-sh_printf("  | |/ _ \ '_ ` _ \ / _ \| '_ \/ __| | | |/ _` | | '_ \ / _` |\n");
-sh_printf("  | |  __/ | | | | | (_) | | | \__ \ |_| | (_| | | | | | (_| |\n");
-sh_printf("  |_|\___|_| |_| |_|\___/|_| |_|___/\__,_|\__, |_|_| |_|\__, |\n");
-sh_printf("                                             |_|        |___/ \n");
-
 }
 
 static void sh_prompt() {

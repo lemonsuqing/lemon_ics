@@ -27,12 +27,12 @@ int SDL_PollEvent(SDL_Event *ev) {
     }
     // printf("buf = %s\n",buf);
     // printf("ev->key.type: %d\n", ev->key.type);
-    int flag = 0;
+    // int flag = 0;
     for (unsigned i = 0; i < sizeof(keyname) / sizeof(keyname[0]); ++i) {
       // printf("i = %d\n",i);
       if (strncmp(buf + 3, keyname[i], strlen(buf) - 4) == 0
             && strlen(keyname[i]) == strlen(buf) - 4) {
-        flag = 1;
+        // flag = 1;
         // printf("ev->key.keysym.sym: %d\n", i);
         ev->key.keysym.sym = i;
         break;
