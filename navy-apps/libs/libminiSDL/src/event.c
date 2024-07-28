@@ -15,6 +15,7 @@ int SDL_PushEvent(SDL_Event *ev) {
 }
 
 int SDL_PollEvent(SDL_Event *ev) {
+  SDL_Init(3);
   unsigned buf_size = 32;
   char *buf = (char *)malloc(buf_size * sizeof(char));
   int ndl_flag = NDL_PollEvent(buf, buf_size);
@@ -47,6 +48,7 @@ int SDL_PollEvent(SDL_Event *ev) {
 }
 
 int SDL_WaitEvent(SDL_Event *ev) {
+    SDL_Init(3);
     unsigned buf_size = 32;
     char *buf = (char *)malloc(buf_size * sizeof(char));
 
