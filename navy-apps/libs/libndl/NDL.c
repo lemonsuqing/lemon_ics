@@ -81,22 +81,40 @@ static void init_dispinfo() {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-  // printf("pixels:%d, x:%d, y:%d, w:%d, h:%d\n",pixels, x, y, w, h);
-  int fd = open("/dev/fb", 0, 0);
-  // printf("open\n");
-  // printf("DNL==>fd:%d\n",fd);
-  // printf("canvas_y %d\n", canvas_y);
-  size_t offset = ( canvas_y * screen_w + canvas_x ) * 4;
-  int ret_seek, ret_write;
-  for (int i = 0; i < h && y + i < canvas_h; ++i) {
-    // printf("offset: %ld\tn: %d\tfd:%d\n", offset, 4*(w < canvas_w - x ? w : canvas_w - x), fd);
-    ret_seek = lseek(fd, offset, SEEK_SET);
-    ret_write = write(fd, pixels + i * w, w*sizeof(uint32_t));
-    offset += screen_w * 4;
-    // printf("offset: %d, offset_ole: %d\n", offset, ((y + canvas_y + i) * screen_w + (x + canvas_x)) * 4);
+  x += (screen_w - canvas_w) / 2;
+  y += (screen_h - canvas_h) / 2;
+  int fb = open("/dev/fb", O_WRONLY);
+  assert(fb != -1);
+  //printf("drawing to %d, %08X: %d %d %d %d\n", fb, *pixels, x,y,w,h);
+  size_t base_offset = (y * screen_w + x) * sizeof(uint32_t);
+  size_t pixel_offset = 0;
+  int j, ret_seek, ret_write;
+  for (j = 0; j < h; ++ j) {
+    ret_seek = lseek(fb, base_offset, SEEK_SET);
+    ret_write = write(fb, pixels + pixel_offset, w * sizeof(uint32_t));
+    pixel_offset += w;
+    base_offset += screen_w * sizeof(uint32_t);
   }
-  close(fd);
 }
+
+
+// void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
+//   // printf("pixels:%d, x:%d, y:%d, w:%d, h:%d\n",pixels, x, y, w, h);
+//   int fd = open("/dev/fb", 0, 0);
+//   // printf("open\n");
+//   // printf("DNL==>fd:%d\n",fd);
+//   // printf("canvas_y %d\n", canvas_y);
+//   size_t offset = ( canvas_y * screen_w + canvas_x ) * 4;
+//   int ret_seek, ret_write;
+//   for (int i = 0; i < h && y + i < canvas_h; ++i) {
+//     // printf("offset: %ld\tn: %d\tfd:%d\n", offset, 4*(w < canvas_w - x ? w : canvas_w - x), fd);
+//     ret_seek = lseek(fd, offset, SEEK_SET);
+//     ret_write = write(fd, pixels + i * w, w*sizeof(uint32_t));
+//     offset += screen_w * 4;
+//     // printf("offset: %d, offset_ole: %d\n", offset, ((y + canvas_y + i) * screen_w + (x + canvas_x)) * 4);
+//   }
+//   close(fd);
+// }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
 }
