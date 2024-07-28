@@ -49,7 +49,7 @@ void NDL_OpenCanvas(int *w, int *h) {
   }
   canvas_x = (screen_w - canvas_w) / 2;
   canvas_y = (screen_h - canvas_h) / 2;
-  printf("相对于屏幕左上角的画布位置坐标x:%d,y:%d\n",canvas_x,canvas_y);
+  // printf("相对于屏幕左上角的画布位置坐标x:%d,y:%d\n",canvas_x,canvas_y);
 }
 
 //解析 /proc/dispinfo 文件的内容，并写入 screen_w 和 screen_h，作为屏幕大小：
@@ -66,7 +66,7 @@ static void init_dispinfo() {
   char *buf_w_date = strtok(NULL, "\n");
   char *buf_h_num = strtok(NULL, ":");
   char *buf_h_date = strtok(NULL, "\n");
-  printf("%s\n", buf_w_num );
+  // printf("%s\n", buf_w_num );
   sscanf(buf_w_num, "%s", buf_wh);
   if(strcmp(buf_wh, "WIDTH") == 0){
     screen_w = atoi(buf_w_date);
@@ -96,25 +96,6 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
     base_offset += screen_w * sizeof(uint32_t);
   }
 }
-
-
-// void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-//   // printf("pixels:%d, x:%d, y:%d, w:%d, h:%d\n",pixels, x, y, w, h);
-//   int fd = open("/dev/fb", 0, 0);
-//   // printf("open\n");
-//   // printf("DNL==>fd:%d\n",fd);
-//   // printf("canvas_y %d\n", canvas_y);
-//   size_t offset = ( canvas_y * screen_w + canvas_x ) * 4;
-//   int ret_seek, ret_write;
-//   for (int i = 0; i < h && y + i < canvas_h; ++i) {
-//     // printf("offset: %ld\tn: %d\tfd:%d\n", offset, 4*(w < canvas_w - x ? w : canvas_w - x), fd);
-//     ret_seek = lseek(fd, offset, SEEK_SET);
-//     ret_write = write(fd, pixels + i * w, w*sizeof(uint32_t));
-//     offset += screen_w * 4;
-//     // printf("offset: %d, offset_ole: %d\n", offset, ((y + canvas_y + i) * screen_w + (x + canvas_x)) * 4);
-//   }
-//   close(fd);
-// }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
 }
