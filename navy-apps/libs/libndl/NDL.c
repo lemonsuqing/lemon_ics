@@ -139,7 +139,7 @@ int NDL_Init(uint32_t flags) {
     evtdev = 3;
   }
   init_dispinfo();
-  printf("屏幕:WIDTH : %d  HEIGHT : %d\n", screen_w, screen_h);
+  // printf("屏幕:WIDTH : %d  HEIGHT : %d\n", screen_w, screen_h);
 
   return 0;
 }
