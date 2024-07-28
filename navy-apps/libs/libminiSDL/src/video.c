@@ -67,76 +67,184 @@
 // }
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
-  assert(dst && src);
-  assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
-  int src_x, src_y, src_w, src_h;
-  int dst_x, dst_y, dst_w, dst_h;
-  int j;
-  if(srcrect == NULL){
-    src_x = 0;src_y = 0;
-    src_w = src->w;
-    src_h = src->h;
-  }else{
-    src_x = srcrect->x; src_y = srcrect->y;
-    src_w = srcrect->w;
-    src_h = srcrect->h;
+    assert(dst && src);
+    assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+
+    uint32_t source_height = src->h;
+    uint32_t source_width = src->w;
+    uint32_t copy_height = source_height;
+    uint32_t copy_width = source_width;
+    uint32_t source_start_offset = 0;
+    uint32_t destination_start_offset = 0;
+    uint32_t bytes_per_pixel = dst->format->BytesPerPixel;
+    uint32_t destination_pitch = dst->pitch;
+    uint32_t source_pitch = src->pitch;
+
+// Adjust the copy area and start offset if a source rectangle is specified
+  if (srcrect != NULL) {
+      copy_height = srcrect->h;
+      copy_width = srcrect->w;
+      source_start_offset = srcrect->y * source_width + srcrect->x;
   }
 
-  if(dstrect == NULL){
-    dst_x = 0, dst_y = 0;
-  }else{
-    dst_x = dstrect->x; dst_y = dstrect->y;
+  // Adjust the destination start offset if a destination rectangle is specified
+  if (dstrect != NULL) {
+      destination_start_offset = dstrect->y * destination_pitch / bytes_per_pixel + dstrect->x;
   }
-  dst_w = src_w; dst_h = src_h;
-  uint32_t men_unit = dst->format->BitsPerPixel == 8 ? sizeof(char) : sizeof(uint32_t);
-  uint32_t dst_off = (dst_y * dst->w + dst_x) * men_unit;
-  uint32_t src_off = (src_y * src->w + src_x) * men_unit;
-  for(j = 0; j < src_h; j ++){
-    memcpy(dst->pixels + dst_off, src->pixels + src_off, src_w * men_unit);
-    dst_off += dst->w * men_unit;
-    src_off += src->w  * men_unit;
+
+// Perform the blit operation
+  for (uint32_t row = 0; row < copy_height; ++row) {
+      void *destination = (uint8_t *)dst->pixels + (destination_start_offset + row * (destination_pitch / bytes_per_pixel)) * bytes_per_pixel;
+      void *source = (uint8_t *)src->pixels + (source_start_offset + row * source_width) * bytes_per_pixel;
+      memcpy(destination, source, copy_width * bytes_per_pixel);
   }
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
-  assert(dst->format->BitsPerPixel != 8);
-  uint32_t *dst_pixels = (uint32_t *)dst->pixels;
-  SDL_Rect tmp;
-  if (dstrect == NULL)
-  {
-    dstrect = &tmp;
-    dstrect->w = dst->w;
-    dstrect->h = dst->h;
-    dstrect->x = 0;
-    dstrect->y = 0;
+  int32_t start_offset = 0; // Initial offset in the pixel buffer
+  uint32_t surface_height = dst->h;
+  uint32_t surface_width = dst->w;
+  uint32_t rect_height = surface_height; // The height of the rectangle area to fill
+  uint32_t rect_width = surface_width;  // The width of the rectangle area to fill
+
+  if (dstrect != NULL) {
+    // If the destination rectangle is specified, update the offset and dimensions
+    start_offset = dstrect->y * surface_width + dstrect->x;
+    rect_height = dstrect->h;
+    rect_width = dstrect->w;
   }
-  for (int i = 0; i < dstrect->w; i++)
-    for (int j = 0; j < dstrect->h; j++)
-    {
-        dst_pixels[(dstrect->y + j) * dst->w + (dstrect->x + i)] = color;
-    }
-  
+
+  int bytes_per_pixel = dst->format->BytesPerPixel; // Calculate bytes per pixel based on the format
+
+// Fill the specified rectangle with the color
+  for (uint32_t row = 0; row < rect_height; ++row) {
+    void *pixel_row_start = (uint8_t *)dst->pixels + (start_offset + row * surface_width) * bytes_per_pixel;
+    memset(pixel_row_start, color, rect_width * bytes_per_pixel);
+  }
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-  //printf("into the updater\n");
-  if(!x && !y && !w && !h){
-    w = s->w;
-    h = s->h;
-  }
-  uint32_t *pixels = (uint32_t *)s->pixels;
-  if(s->format->BitsPerPixel == 8){
-    pixels = (uint32_t *)malloc(sizeof(uint32_t) * s->w * s->h);
-    SDL_Color *colors = s->format->palette->colors;
-    for(int i = 0; i < w * h; ++ i){
-      pixels[i] = (colors[s->pixels[i]].a << s->format->Ashift) | (colors[s->pixels[i]].r << s->format->Rshift) | (colors[s->pixels[i]].g << s->format->Gshift) | (colors[s->pixels[i]].b);
+  if (s == NULL || s->pixels == NULL) {
+        // Handle null pointer
+        return;
     }
-  }
-  NDL_DrawRect(pixels, x, y, w, h);
-  if(s->format->BitsPerPixel == 8){
-    free(pixels);
-  }
+
+    if (w == 0 || h == 0) {
+        w = s->w;
+        h = s->h;
+    }
+
+    uint32_t len = (uint32_t)w * (uint32_t)h;
+    uint32_t *buf = (uint32_t *)malloc(len * sizeof(uint32_t));
+
+    if (buf == NULL) {
+        // Handle memory allocation failure
+        return;
+    }
+    
+    uint8_t *pixels = (uint8_t *)s->pixels;
+    uint8_t bytes_per_pixel = s->format->BytesPerPixel;
+    uint32_t pitch = s->pitch;
+
+    for (int row = 0; row < h; ++row) {
+        for (int col = 0; col < w; ++col) {
+            int index = row * w + col;  // index in the buffer
+            int pixel_pos = (y + row) * (pitch / bytes_per_pixel) + (x + col);  // pixel position in the surface
+
+            if (s->format->BitsPerPixel == 32) {
+                uint32_t *pixels_32 = (uint32_t *)pixels;
+                buf[index] = pixels_32[pixel_pos];
+            }
+            else if (s->format->BitsPerPixel == 8) {
+                uint8_t index_in_palette = pixels[pixel_pos];
+                SDL_Color rgba_color = s->format->palette->colors[index_in_palette];
+                buf[index] = (rgba_color.a << 24) | (rgba_color.r << 16) | (rgba_color.g << 8) | (rgba_color.b); 
+            }
+            else {
+                // Unsupported pixel format
+                free(buf);
+                fprintf(stderr, "SDL_UpdateRect: Unsupported pixel format with %d bits per pixel\n", s->format->BitsPerPixel);
+                return;
+            }
+        }
+    }
+
+    NDL_DrawRect(buf, x, y, w, h);
+
+    free(buf);
 }
+
+// void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
+//   assert(dst && src);
+//   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+//   int src_x, src_y, src_w, src_h;
+//   int dst_x, dst_y, dst_w, dst_h;
+//   int j;
+//   if(srcrect == NULL){
+//     src_x = 0;src_y = 0;
+//     src_w = src->w;
+//     src_h = src->h;
+//   }else{
+//     src_x = srcrect->x; src_y = srcrect->y;
+//     src_w = srcrect->w;
+//     src_h = srcrect->h;
+//   }
+
+//   if(dstrect == NULL){
+//     dst_x = 0, dst_y = 0;
+//   }else{
+//     dst_x = dstrect->x; dst_y = dstrect->y;
+//   }
+//   dst_w = src_w; dst_h = src_h;
+//   uint32_t men_unit = dst->format->BitsPerPixel == 8 ? sizeof(char) : sizeof(uint32_t);
+//   uint32_t dst_off = (dst_y * dst->w + dst_x) * men_unit;
+//   uint32_t src_off = (src_y * src->w + src_x) * men_unit;
+//   for(j = 0; j < src_h; j ++){
+//     memcpy(dst->pixels + dst_off, src->pixels + src_off, src_w * men_unit);
+//     dst_off += dst->w * men_unit;
+//     src_off += src->w  * men_unit;
+//   }
+// }
+
+// void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+//   assert(dst->format->BitsPerPixel != 8);
+//   uint32_t *dst_pixels = (uint32_t *)dst->pixels;
+//   SDL_Rect tmp;
+//   if (dstrect == NULL)
+//   {
+//     dstrect = &tmp;
+//     dstrect->w = dst->w;
+//     dstrect->h = dst->h;
+//     dstrect->x = 0;
+//     dstrect->y = 0;
+//   }
+//   for (int i = 0; i < dstrect->w; i++)
+//     for (int j = 0; j < dstrect->h; j++)
+//     {
+//         dst_pixels[(dstrect->y + j) * dst->w + (dstrect->x + i)] = color;
+//     }
+  
+// }
+
+// void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
+//   //printf("into the updater\n");
+//   if(!x && !y && !w && !h){
+//     w = s->w;
+//     h = s->h;
+//   }
+//   uint32_t *pixels = (uint32_t *)s->pixels;
+//   if(s->format->BitsPerPixel == 8){
+//     pixels = (uint32_t *)malloc(sizeof(uint32_t) * s->w * s->h);
+//     SDL_Color *colors = s->format->palette->colors;
+//     for(int i = 0; i < w * h; ++ i){
+//       pixels[i] = (colors[s->pixels[i]].a << s->format->Ashift) | (colors[s->pixels[i]].r << s->format->Rshift) | (colors[s->pixels[i]].g << s->format->Gshift) | (colors[s->pixels[i]].b);
+//     }
+//   }
+//   NDL_DrawRect(pixels, x, y, w, h);
+//   if(s->format->BitsPerPixel == 8){
+//     free(pixels);
+//   }
+// }
 
 // void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 //   if (w == 0 && h == 0) { // w=h=0时，使用默认大小即全屏
