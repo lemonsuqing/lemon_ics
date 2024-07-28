@@ -22,7 +22,7 @@ SDL_Surface* IMG_Load(const char *filename) {
   long size = ftell(fp);
 
   char * buf = (char *)malloc(size);
-  assert(fread(buf, size, 1, fp) == size);
+  assert(fread(buf, size, 1, fp));
 
   SDL_Surface * ret_surface = STBIMG_LoadFromMemory(buf, size);
   assert(ret_surface != NULL);
